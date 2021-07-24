@@ -1,0 +1,73 @@
+.rdw-option-wrapper{
+    padding: 0.2rem;
+    min-width: 2rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 0 0.2rem;
+    transition: all ease-in 0.2s;
+}
+
+.rdw-option-wrapper:hover{
+    box-shadow: 0 0 5px 1px #c1c1c185; 
+}
+
+.rdw-option-wrapper:active{
+    transition: all ease-in 0.2s;
+    box-shadow: inset 0px 0px 5px #c1c1c1;
+}
+
+.rdw-option-active {
+    box-shadow: inset 0px 0px 5px #c1c1c1;
+}
+
+.rdw-option-active:hover {
+    box-shadow: inset 0px 0px 5px #c1c1c1;
+}
+
+.rdw-dropdown-wrapper{
+    padding: 0.2rem;
+    min-width: 2.9rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 0 0.2rem;
+    transition: all ease-in 0.2s;
+}
+
+.rdw-dropdown-wrapper:hover{
+    box-shadow: 0 0 5px 1px #c1c1c185; 
+}
+
+.rdw-dropdown-optionwrapper{
+    padding: 0.05rem;
+    transition: all ease-in 0.2s;
+    max-width: 7.2rem;
+}
+
+.rdw-dropdown-optionwrapper:hover{
+    box-shadow: 0 0 5px 1px #c1c1c185; 
+}
+
+.rdw-dropdownoption-default{
+    max-width: 5rem;
+}
+
+.public-DraftEditor-content{
+    padding: 0 1rem;
+    
+}
+
+.rdw-editor-toolbar{
+    border:1px solid #00000022;
+    border-radius: 0.5rem;
+    margin: 0;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.rdw-editor-main{
+    border:1px solid #00000022;
+    border-top:none;
+    border-radius: 0 0 0.5rem 0.5rem;
+    overflow: hidden;
+    min-height: 12rem;
+    height: auto;
+}
