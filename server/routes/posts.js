@@ -33,51 +33,52 @@ router.get('/:id', (req, res) => {
 
 /* POST a post */
 router.post('/', (req, res) => {
-    const { title, content, userId } = req.body;
-    console.log(req.files);
-    console.log(req.body);
+    let {title, content, userId} = req.body;
 
     if (req.files !== null) {
-        const { file } = req.files;
+        const {file} = req.files;
         file.mv(path.join(__dirname, `../uploads/images/${file.name}`), err => {
             if (err) {
-                console.log(err);
+                console.log(err)
             }
-        });
+        })
     }
-
-    const image = req.files.file.name || '';
-
+    const image = req.files !== null ? req.files.file.name : '';
+    
     if (title !== undefined && image !== undefined && content !== undefined && userId !== undefined) {
-        if (req.files === null) {
+        if(req.files === null){
             try {
-                db.query(`INSERT INTO posts (title, content, userId) VALUES ?`, [[[title, content, userId]]], err => {
-                    if (err) {
+                db.query(`INSERT INTO posts (title, content, userId) VALUES ?`,
+                    [[[ title,content, userId]]],
+                    function (err) {
                         console.log(err);
-                        res.status(500).send(err);
-                    }
-                    res.send("Data Added Successfully!!!");
-                })
+                        if (err) {
+                            res.status(500).send(err);
+                        }
+                        res.send("data added successfully!!!");
+                    });
+            } catch (err) {
+                res.status(500).send(err);
             }
-            catch (err) {
+        }
+        else {
+            try {
+                db.query(`INSERT INTO posts (title, image, content, userId) VALUES ?`,
+                    [[[title,image,content,userId]]],
+                    function (err) {
+                        console.log(err);
+                        if (err) {
+                            res.status(500).send(err);
+                        }
+                        res.send("data added successfully!!!");
+                    });
+            } catch (err) {
                 res.status(500).send(err);
             }
         }
     }
-    else {
-        try {
-            db.query(`INSERT INTO posts (title, image, content, userId) VALUES ?`, [[[title, content, userId]]], err => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                }
-                res.send("Data Added Successfully!!!");
-            })
-        } catch (err) {
-            res.status(500).send(err);
-        }
-    }
 });
+
 
 router.put('/:id', (req, res) => {
     const { id } = req.params;
@@ -138,11 +139,12 @@ router.put('/:id', (req, res) => {
 });
 
 /* DELETE POST */
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
     console.log(req.params);
     const { id } = req.params;
-    db.query(`DELETE FROM posts WHERE postId='${id}')`, (err) => {
+    db.query(`DELETE FROM posts WHERE postId='${id}'`, (err) => {
         if (err) {
+            console.log(err);
             res.json({ success: false });
         }
         else res.json({ success: true });

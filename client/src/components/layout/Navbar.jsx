@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../slices/authSlice";
 
 const Nav = styled.nav`
     display: flex;
@@ -8,6 +11,10 @@ const Nav = styled.nav`
     height: 4rem;
     background: #6910a8;
     padding: 0 4rem;
+
+    @media only screen and (max-width:976px){
+        padding: 0 1rem;
+    }
 `;
 
 const NavDiv = styled.div`
@@ -18,15 +25,16 @@ const NavDiv = styled.div`
     align-items: center;
 `;
 
-const NavDivItem = styled.a`
+const NavDivItem = styled(Link)`
     display: flex;
     text-decoration-line: none;
     color: white;
     margin: 0 0.5rem;
-
+    outline: none;
     &:hover {
         cursor: pointer;
     }
+
 `;
 
 const NavButton = styled.button`
@@ -56,20 +64,35 @@ const Logo = styled.div`
 `;
 
 export default function Navbar() {
+
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+    const dispatch = useDispatch();
+
+    const onLogOutClick = (e) => {
+        dispatch(logOut());
+    }
+
     return (
         <Nav>
             <NavDiv>
-                <NavDivItem>
+                <NavDivItem to={'/'}>
                     Home
                 </NavDivItem>
-                <NavDivItem>Add Post</NavDivItem>
+                {
+                    isLoggedIn &&
+                    <>
+                        <NavDivItem to={'/add'}>
+                            Add Post
+                        </NavDivItem>
+                    </>
+                }
             </NavDiv>
             <NavDiv>
                 <Logo>Blog Posts</Logo>
             </NavDiv>
             <NavDiv>
-                <NavButton>Log In</NavButton>
-                <NavButton>Sign Up</NavButton>
+                <NavDivItem to={"/about-us"}>About Us</NavDivItem>
+                {isLoggedIn && <NavButton onClick={onLogOutClick}>Log Out</NavButton>}
             </NavDiv>
         </Nav>
     );

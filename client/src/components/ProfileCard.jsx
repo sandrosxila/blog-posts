@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from "react-redux";
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileImage } from '@fortawesome/free-solid-svg-icons'
 
 const UserProfileCard = styled.div`
+    position: sticky;
+    top: 1rem;
+    min-width: 14rem;
     padding: 1rem;
     border-radius: 1rem;
     border: 1px solid #6910a8;
@@ -28,15 +34,29 @@ const SmallText = styled.small`
 `;
 
 function ProfileCard() {
+
+    const userData = useSelector(state => state.auth.userData);
+    const [imageFail, setImageFail] = useState(false);
+
+    const { userId, firstName, lastName, email, photo } = userData;
+
     return (
         <UserProfileCard>
-            <ProfilePhotoArea src="https://via.placeholder.com/100x300" alt="Image is not Available!!!" />
+            <ProfilePhotoArea src={`/photos/${userId}/${photo}`} alt="Image is not Available!!!"
+                onError={
+                    (e) => {
+                        e.target.style.display = 'none';
+                        setImageFail(true);
+                    }
+                }
+            />
+            {imageFail && <FontAwesomeIcon icon={faFileImage} />}
             <div>
                 <UserData>
-                    <strong>Firstname Lastname</strong>
+                    <strong>{firstName} {lastName}</strong>
                 </UserData>
                 <UserData>
-                    <SmallText>firstnamelastname@gmail.com</SmallText>
+                    <SmallText>{email}</SmallText>
                 </UserData>
             </div>
         </UserProfileCard>

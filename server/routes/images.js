@@ -35,7 +35,7 @@ router.delete('/:name', (req, res) => {
             res.json({ success: false });
         }
         else {
-            db.query(`UPDATE \`react_expressjs_mysql\`.\`posts\` SET \`image\` = NULL WHERE (\`image\` = '${name}')`, (err) => {
+            db.query(`UPDATE posts SET image=NULL WHERE image='${name}'`, (err) => {
                 if (err) {
                     res.json({ success: false });
                 }

@@ -51,7 +51,7 @@ router.get('/:id/posts', (req, res) => {
 
 /* User Log In Validation */
 router.post('/login', (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
     db.query(`SELECT * FROM users WHERE email='${email}'`, (err, result) => {
         if (err) {
@@ -79,14 +79,14 @@ router.post('/login', (req, res) => {
 /* Register user */
 router.post('/signup', (req, res) => {
     const getFile = () => {
-        if (req.files !== null) {
+        if (req.files) {
             const { file } = req.files;
             return file;
         }
         return null;
     }
 
-    const { firstName, lastName, email, password, photo} = req.body;
+    const { firstName, lastName, email, password, photo } = req.body;
 
     const removeRecord = (email, hash) => {
         db.query(`DELETE FROM users WHERE email='${email}' and password='${hash}'`, err => {
@@ -111,7 +111,7 @@ router.post('/signup', (req, res) => {
                         }
                         else {
                             console.log("file moved");
-                            res.send({ userData: rows[0], messaage: "data added successfully!!!" });
+                            res.send({ userData: rows[0], message: "data added successfully!!!" });
                         }
                     })
                 }
@@ -119,7 +119,7 @@ router.post('/signup', (req, res) => {
             catch(
                 err => {
                     console.log(err);
-                    res.send({ messaage: "folder is not created!!!" });
+                    res.send({ message: "folder is not created!!!" });
                 }
             );
     }
@@ -168,7 +168,7 @@ router.post('/signup', (req, res) => {
                                             insertFile(rows[0].userId, rows);
                                         }
                                         else {
-                                            res.send({ userData: rows[0], message: 'Data added successfully!!!' });
+                                            res.send({ userData: rows[0], message: 'data added successfully!!!' });
                                         }
                                     }
                                 });
@@ -185,25 +185,56 @@ router.post('/signup', (req, res) => {
 });
 
 /* Update user by ID */
-router.put(':/id', (req, res) => {
+router.put('/:id', (req, res) => {
     const { id } = req.params;
     const data = { ...req.body };
+    console.log(data);
 
-    db.query(`UPDATE users SET ? WHERE userId='${id}'`, data, err => {
-        if (err) {
-            res.send(err);
-            console.log(err)
+    const getFile = () => {
+        if (req.files) {
+            const { file } = req.files;
+            return file;
         }
-        else {
-            db.query('SELECT * FROM users', (err, rows) => {
-                if (err) {
-                    res.send(err);
-                } else {
-                    res.json(rows);
-                }
-            });
-        }
-    });
+        return null;
+    }
+
+    const updateDatabase = (id, data) => {
+        db.query(`UPDATE users SET ? WHERE userId='${id}'`, data, err => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                db.query('SELECT * FROM users', (err, rows) => {
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        res.json(rows);
+                    }
+                });
+            }
+        });
+    }
+
+    const file = getFile();
+
+
+    if (file && data.photo) {
+        file.mv(path.join(__dirname, `../uploads/photos/${id}/${data.photo}`), err => {
+            if (err) {
+                console.log(file);
+                console.log(err);
+                console.log("unable to upload the picture");
+                res.json({ message: "unable to upload the picture" });
+            }
+            else {
+                updateDatabase(id, data);
+            }
+        });
+    }
+    else {
+        updateDatabase(id, data);
+    }
 });
 
 /* Delete user by ID */

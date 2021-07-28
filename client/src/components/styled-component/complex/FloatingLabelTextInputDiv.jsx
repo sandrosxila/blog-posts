@@ -13,7 +13,7 @@ const InputDiv = styled.div`
         margin:0.2rem 0;
         font-weight: 400;
         font-size: 0.9rem;
-        color: transparent;
+        visibility: hidden;
         position:absolute;
         top: 15%;
         left: 3.7%;
@@ -22,6 +22,7 @@ const InputDiv = styled.div`
 
     & > input:focus + label{
         --text-shadow-color : #ffffff;
+        visibility: visible;
         display: inline-block;
         align-self: flex-start;
         margin:0.2rem 0;
