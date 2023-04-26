@@ -1,0 +1,142 @@
+{
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 5,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "import", "react-hooks", "@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "import/order": [
+      "warn",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "indent": [
+      "warn",
+      4,
+      {
+        "ignoredNodes": ["JSXElement"]
+      }
+    ],
+    "no-multi-spaces": "warn",
+    "quotes": ["warn", "single"],
+    "semi": ["warn", "always"],
+    "object-curly-spacing": ["warn", "always"],
+    "arrow-spacing": [
+      "warn",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "arrow-body-style": ["warn", "as-needed"],
+    "space-infix-ops": [
+      "warn",
+      {
+        "int32Hint": false
+      }
+    ],
+    "comma-spacing": [
+      "warn",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "@typescript-eslint/type-annotation-spacing": [
+      "warn",
+      {
+        "before": false,
+        "after": true,
+        "overrides": {
+          "arrow": {
+            "before": true,
+            "after": true
+          }
+        }
+      }
+    ],
+    "@typescript-eslint/object-curly-spacing": ["warn", "always"],
+    "@typescript-eslint/indent": [
+      "warn",
+      4,
+      {
+        "ignoredNodes": ["JSXElement"]
+      }
+    ],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-curly-newline": [
+      "warn",
+      {
+        "multiline": "require",
+        "singleline": "consistent"
+      }
+    ],
+    "react/jsx-curly-spacing": [
+      "warn",
+      {
+        "when": "always",
+        "allowMultiline": true,
+        "multilineText": true
+      }
+    ],
+    "react/jsx-indent": [
+      "warn",
+      4,
+      {
+        "indentLogicalExpressions": true,
+        "checkAttributes": false
+      }
+    ],
+    "react/jsx-indent-props": ["warn", 4],
+    "react/display-name": "off",
+    "react/jsx-closing-bracket-location": ["warn", "tag-aligned"],
+    "react/jsx-wrap-multilines": [
+      "warn",
+      {
+        "declaration": "ignore",
+        "assignment": "parens-new-line",
+        "return": "parens-new-line",
+        "arrow": "parens-new-line",
+        "condition": "parens-new-line",
+        "logical": "parens-new-line",
+        "prop": "ignore"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "blog-posts",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "lerna run start --parallel",
+    "start:api": "lerna run start --scope @blog-posts/api",
+    "start:client": "lerna run start --scope @blog-posts/client"
+  },
+  "devDependencies": {
+    "lerna": "^6.6.1"
+  }
+}
