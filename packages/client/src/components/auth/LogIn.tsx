@@ -128,6 +128,7 @@ function LogIn({ onLogInLabelClick }: Props) {
         e.preventDefault();
         console.log(credentials);
         const res = await axios.post('api/users/login', credentials);
+        console.log(res)
         setResponse(res.data);
     };
 

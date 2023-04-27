@@ -5,10 +5,10 @@ import { unlink } from 'fs/promises';
 
 @Injectable()
 export class PhotosService {
-  getFile(id: string, name: string) {
+  getFile(name: string) {
     try {
       const file = createReadStream(
-        join(__dirname, `../../uploads/photos/${id}/${name}`),
+        join(process.cwd(), `/uploads/photos/${name}`),
       );
       return file;
     } catch {
@@ -16,9 +16,9 @@ export class PhotosService {
     }
   }
 
-  async remove(id: string, name: string) {
+  async remove(name: string) {
     try {
-      await unlink(join(__dirname, `../../uploads/photos/${id}/${name}`));
+      await unlink(join(__dirname, `../../uploads/photos/${name}`));
       // Remove from DB
     } catch {
       throw new BadRequestException('file is not deleted or not found');

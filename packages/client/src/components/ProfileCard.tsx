@@ -45,10 +45,14 @@ function ProfileCard() {
 
     return (
         <UserProfileCard>
-            <ProfilePhotoArea src={ `/photos/${userId}/${photo}` } alt="Image is not Available!!!"
-                hidden = { imageFail }
-                onError={ () => setImageFail(true) }
-            />
+            {
+                photo && (
+                    <ProfilePhotoArea src={ `api/photos/${photo}` } alt="Image is not Available!!!"
+                        hidden = { imageFail }
+                        onError={ () => setImageFail(true) }
+                    />
+                )
+            }
             {imageFail && <FontAwesomeIcon icon={ faFileImage } />}
             <div>
                 <UserData>
