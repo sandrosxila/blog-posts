@@ -162,7 +162,7 @@ function AddPost() {
             formData.append('content', content);
             formData.append('userId', userData.userId);
 
-            axios.post('/posts', formData, {
+            axios.post('api/posts', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

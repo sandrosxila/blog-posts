@@ -2,7 +2,6 @@ import {
   Controller,
   Post,
   Body,
-  UseInterceptors,
   UseFilters,
   Res,
   HttpStatus,
@@ -10,15 +9,15 @@ import {
 import { UsersService } from './users.service';
 import { LogInUserDto } from './dto/log-in-user.dto';
 import { AuthService } from './auth.service';
-import { SignUpUserDto } from './dto/sign-up-user.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { randomBytes } from 'crypto';
-import { SignUpFilter } from './filters/sign-up.filter';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UploadedFileFilter } from '../filters/uploaded-file.filter';
 import { Response } from 'express';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { UserDto } from './dto/user.dto';
+import { FileUploader } from 'src/interceptors/file-uploader.interceptor';
 
 @Controller('users')
+@Serialize(UserDto)
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -37,19 +36,9 @@ export class UsersController {
   }
 
   @Post('/signup')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads/photos',
-        filename: (req, file, next) => {
-          const name = randomBytes(32).toString('hex');
-          next(null, `${name}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
-  @UseFilters(SignUpFilter)
-  async signUp(@Body() body: SignUpUserDto, @Res() res: Response) {
+  @FileUploader('./uploads/photos')
+  @UseFilters(UploadedFileFilter)
+  async signUp(@Body() body: CreateUserDto, @Res() res: Response) {
     const { firstName, lastName, email, password, photo } = body;
 
     await this.authService.signUp(firstName, lastName, email, password, photo);

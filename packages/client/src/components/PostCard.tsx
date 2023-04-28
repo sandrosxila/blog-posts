@@ -132,13 +132,13 @@ function PostCardLayout({ imageSource, title, content, readMoreLink, postUserId,
     const switchShowDeleteMessage = () => setShowDeleteMessage(!showDeleteMessage);
 
     const onDeleteClick = () => {
-        axios.delete(`/posts/${postId}`)
+        axios.delete(`api/posts/${postId}`)
             .then(res => {
                 console.log('IMAGE NAME', imageName);
                 if (imageName !== undefined && imageName !== null) {
-                    axios.delete(`/images/remove/${imageName}`)
+                    axios.delete(`api/images/remove/${imageName}`)
                         .then(res => {
-                            axios.get(postsUrl)
+                            axios.get('/api' + postsUrl)
                                 .then(res => {
                                     setPosts(res.data);
                                 });
@@ -149,7 +149,7 @@ function PostCardLayout({ imageSource, title, content, readMoreLink, postUserId,
                         });
                 }
                 else {
-                    axios.get(postsUrl)
+                    axios.get('/api' + postsUrl)
                         .then(res => {
                             setPosts(res.data);
                         });

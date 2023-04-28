@@ -41,7 +41,7 @@ function ProfileCard() {
     const userData = useAppSelector(state => state.auth.userData);
     const [imageFail, setImageFail] = useState(false);
 
-    const { userId, firstName, lastName, email, photo } = userData;
+    const { firstName, lastName, email, photo } = userData;
 
     return (
         <UserProfileCard>

@@ -9,7 +9,7 @@ import { Request, Response } from 'express';
 import { unlink } from 'fs/promises';
 
 @Catch(BadRequestException, HttpException)
-export class SignUpFilter implements ExceptionFilter {
+export class UploadedFileFilter implements ExceptionFilter {
   async catch(exception: BadRequestException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();

@@ -64,7 +64,7 @@ function PostBoard() {
 
     const [posts, setPosts] = useState([]);
     useEffect(() => {
-        axios.get('/posts')
+        axios.get('api/posts')
             .then((res) => {
                 setPosts(res.data);
             }).catch(e => console.log(e));
@@ -88,7 +88,7 @@ function PostBoard() {
                             <PostCard
                                 key={ postId }
                                 title={ title }
-                                imageSource={ `/images/${image}` }
+                                imageSource={ `/api/images/${image}` }
                                 imageName={ image }
                                 content={ content }
                                 readMoreLink={ `/${userId}/posts/${postId}` }

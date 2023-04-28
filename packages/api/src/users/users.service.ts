@@ -25,8 +25,12 @@ export class UsersService {
     return await this.user.save(user);
   }
 
-  async findOne(email: string) {
-    return await this.user.findOneBy({ email });
+  async findOne(id: number) {
+    return await this.user.findOneBy({ userId: id });
+  }
+
+  async find(email: string) {
+    return await this.user.findBy({ email });
   }
 
   async removeRecord(email: string, hash: string) {

@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Delete,
-  Res,
-  StreamableFile,
-} from '@nestjs/common';
+import { Controller, Get, Param, Delete, Res } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import { Response } from 'express';
 
@@ -20,7 +13,7 @@ export class ImagesController {
       'Content-Type': 'image/png',
       'Content-Disposition': `attachment; filename="${name}"`,
     });
-    return new StreamableFile(file);
+    file.pipe(res);
   }
 
   @Delete('/remove/:name')

@@ -1,23 +1,59 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Post } from './entities/post.entity';
+import { Repository } from 'typeorm';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class PostsService {
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
+  constructor(
+    @InjectRepository(Post) private readonly post: Repository<Post>,
+    private readonly usersService: UsersService,
+  ) {}
+
+  async create(userId: string, title: string, content: string, image?: string) {
+    const user = await this.usersService.findOne(Number(userId));
+
+    if (!user) {
+      throw new HttpException(
+        `Couldn't find user with ${userId}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const post = this.post.create({
+      content,
+      title,
+      user,
+      image,
+    });
+
+    this.post.save(post);
+
+    return post;
   }
 
-  findAll() {
-    return `This action returns all posts`;
+  async findAll() {
+    return await this.post.find({
+      order: {
+        postId: 'desc',
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
+  async findOne(id: number) {
+    return await this.post.findOneBy({
+      postId: id,
+    });
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async update(id: number, title: string, content: string, image: string) {
+    return await this.post.save({
+      postId: id,
+      title,
+      content,
+      image,
+    });
   }
 
   remove(id: number) {

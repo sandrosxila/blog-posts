@@ -11,7 +11,7 @@ export class AuthService {
   constructor(private readonly usersService: UsersService) {}
 
   async logIn({ email, password }: LogInUserDto) {
-    const user = await this.usersService.findOne(email);
+    const [user] = await this.usersService.find(email);
 
     if (!user) {
       return new HttpException('Email not found', HttpStatus.NOT_FOUND);
@@ -35,7 +35,7 @@ export class AuthService {
     password: string,
     photo: string,
   ) {
-    const user = await this.usersService.findOne(email);
+    const [user] = await this.usersService.find(email);
 
     if (user) {
       throw new HttpException('Email is in use', HttpStatus.CONFLICT);

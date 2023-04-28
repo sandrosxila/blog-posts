@@ -7,7 +7,7 @@ import { unlink } from 'fs/promises';
 export class ImagesService {
   getFile(name: string) {
     const file = createReadStream(
-      join(__dirname, `../../uploads/images/${name}`),
+      join(process.cwd(), `/uploads/images/${name}`),
     );
 
     return file;
@@ -20,7 +20,7 @@ export class ImagesService {
 
   async remove(name: string) {
     try {
-      await unlink(join(__dirname, `../uploads/images/${name}`));
+      await unlink(join(process.cwd(), `/uploads/images/${name}`));
     } catch {
       throw new BadRequestException('file is not deleted or not found');
     }

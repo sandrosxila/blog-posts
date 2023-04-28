@@ -45,21 +45,20 @@ function Post() {
     });
 
     useEffect(() => {
-        axios.get(`/posts/${urlPostId}`)
+        axios.get(`/api/posts/${urlPostId}`)
             .then(
                 res => {
                     setPostData(res.data);
-                    console.log(postData);
                 }
             );
-    }, [setPostData, urlPostId, postData]);
+    }, [setPostData, urlPostId]);
 
     const { title, image, content } = postData;
 
     return (
         <AddPostLayout>
             <PostCard>
-                <PostImage src={ `/images/${image}` } alt="Loading ..."/>
+                <PostImage src={ `/api/images/${image}` } alt="Loading ..."/>
                 <h1>
                     {title}
                 </h1>

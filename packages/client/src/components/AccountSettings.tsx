@@ -198,7 +198,7 @@ function AccountSettings() {
     };
 
     const [photo, setPhoto] = useState(userData.photo);
-    const [fileUrlName, setFileUrlName] = useState(`/photos/${userId}/${photo}`);
+    const [fileUrlName, setFileUrlName] = useState(`api/photos/${photo}`);
 
     const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -215,7 +215,7 @@ function AccountSettings() {
             }).then((res) => {
                 setPhoto(newFileName);
                 dispatch(setUserData({ ...userData, photo: newFileName }));
-                setFileUrlName(`/photos/${userId}/${newFileName}`);
+                setFileUrlName(`api/photos/${newFileName}`);
             }).catch(e => console.log(e));
         }
     };
