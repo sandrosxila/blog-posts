@@ -21,8 +21,8 @@ export class ImagesService {
   async remove(name: string) {
     try {
       await unlink(join(process.cwd(), `/uploads/images/${name}`));
-    } catch {
-      throw new BadRequestException('file is not deleted or not found');
+    } catch (e) {
+      console.log(e);
     }
   }
 }

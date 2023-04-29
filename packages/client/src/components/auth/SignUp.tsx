@@ -6,7 +6,6 @@ import axios from 'axios';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { v4 as uuid } from 'uuid';
 
 import { setUserData } from '../../slices/authSlice';
 import { useAppDispatch } from '../../store';
@@ -251,11 +250,9 @@ function SignUp({ onSignUpLabelClick }: Props) {
         formData.append('password', password);
 
         if (newImageUploaded) {
-            const newFileName = uuid() + '.' + fileName.split('.').pop();
             if(file){
-                formData.append('file', file, newFileName);
+                formData.append('file', file);
             }
-            formData.append('photo', newFileName);
         }
         console.log(formData);
         if (validateData()) {
@@ -328,7 +325,7 @@ function SignUp({ onSignUpLabelClick }: Props) {
                 <SignUpFileUpload>
                     <SignUpFileInput type="file" id="file" onChange={ onFileInputChange } />
                     <SignUpFileLabel htmlFor="file">
-                        {fileName.length > 15 ? `${fileName.substr(0, 15)}...` : fileName}
+                        {fileName.length > 15 ? `${fileName.slice(0, 15)}...` : fileName}
                     </SignUpFileLabel>
                     {
                         fileUrlName && (

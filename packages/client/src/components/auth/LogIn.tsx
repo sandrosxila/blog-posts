@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -115,21 +115,18 @@ function LogIn({ onLogInLabelClick }: Props) {
         password: ''
     });
 
-    const [response, setResponse] = useState<any>({ message: '' });
-
-    useEffect(() => {
-        if (response.message === 'Credentials Match.') {
-            dispatch(setUserData(response.userData as any));
-            navigate('/');
-        }
-    }, [dispatch, navigate, response.message, response.userData]);
+    const [error, setError] = useState('');
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(credentials);
-        const res = await axios.post('api/users/login', credentials);
-        console.log(res)
-        setResponse(res.data);
+        try{
+            const res = await axios.post('/api/users/login', credentials);
+            dispatch(setUserData(res.data));
+            navigate('/');
+        }
+        catch(e: any) {
+            setError(e.response.data.message);
+        }
     };
 
 
@@ -143,7 +140,6 @@ function LogIn({ onLogInLabelClick }: Props) {
     };
 
     const { email, password } = credentials;
-    const { message } = response;
 
     return (
         <LogInLayout>
@@ -157,9 +153,9 @@ function LogIn({ onLogInLabelClick }: Props) {
                     {'Sign Up if you don\'t have an account '}<FontAwesomeIcon icon={ faArrowRight } size="sm" />
                 </LogInLabel>
                 {
-                    message && (
+                    error && (
                         <LogInMessageLabel>
-                            {message}
+                            {error}
                         </LogInMessageLabel>
                     )
                 }

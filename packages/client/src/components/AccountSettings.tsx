@@ -157,7 +157,7 @@ function AccountSettings() {
     const changeEditFirstName = () => {
         setEditFirstName(!editFirstName);
         if (userData.firstName !== firstName) {
-            axios.put(`users/${userId}`, { firstName })
+            axios.put(`/api/users/${userId}`, { firstName })
                 .then(_ => dispatch(setUserData({ ...userData, firstName })))
                 .catch(e => {
                     console.log(e);
@@ -173,7 +173,7 @@ function AccountSettings() {
     const changeEditLastName = () => {
         setEditLastName(!editLastName);
         if (userData.lastName !== lastName) {
-            axios.put(`users/${userId}`, { lastName })
+            axios.put(`/api/users/${userId}`, { lastName })
                 .then(_ => dispatch(setUserData({ ...userData, lastName })))
                 .catch(e => {
                     setMessage('First Name is not Updated in Database');
@@ -188,7 +188,7 @@ function AccountSettings() {
     const changeEditEmail = () => {
         setEditEmail(!editEmail);
         if (userData.email !== email) {
-            axios.put(`users/${userId}`, { email })
+            axios.put(`/api/users/${userId}`, { email })
                 .then(_ => dispatch(setUserData({ ...userData, email })))
                 .catch(e => {
                     setMessage('First Name is not Updated in Database');
@@ -208,14 +208,14 @@ function AccountSettings() {
             formData.append('file', e.target.files[0], newFileName);
             formData.append('photo', newFileName);
 
-            axios.put(`users/${userId}`, formData, {
+            axios.put(`/api/users/${userId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((res) => {
                 setPhoto(newFileName);
                 dispatch(setUserData({ ...userData, photo: newFileName }));
-                setFileUrlName(`api/photos/${newFileName}`);
+                setFileUrlName(`/api/photos/${newFileName}`);
             }).catch(e => console.log(e));
         }
     };

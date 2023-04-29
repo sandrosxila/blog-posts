@@ -152,17 +152,13 @@ function AddPost() {
         e.preventDefault();
         if(file && titleRef.current?.value && userData.userId){
             const formData = new FormData();
-            const newFileName = uuid() + '.' + fileName.split('.').pop();
-            try {
-                formData.append('file', file, newFileName);
-            } catch (e) {
-                console.log('image is not uploaded');
-            }
+            
+            formData.append('file', file);
             formData.append('title', titleRef.current.value);
             formData.append('content', content);
             formData.append('userId', userData.userId);
 
-            axios.post('api/posts', formData, {
+            axios.post('/api/posts', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

@@ -14,7 +14,7 @@ export class AuthService {
     const [user] = await this.usersService.find(email);
 
     if (!user) {
-      return new HttpException('Email not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Email not found', HttpStatus.NOT_FOUND);
     }
 
     const [salt, storedHash] = user.password.split('.');
@@ -22,7 +22,7 @@ export class AuthService {
     const hash = (await scrypt(password, salt, 32)) as Buffer;
 
     if (storedHash !== hash.toString('hex')) {
-      return new HttpException("Password doesn't match", HttpStatus.FORBIDDEN);
+      throw new HttpException("Password doesn't match", HttpStatus.FORBIDDEN);
     }
 
     return user;

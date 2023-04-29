@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
 import JoditEditor from 'jodit-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { v4 as uuid } from 'uuid';
 
 import Button from './styled-component/Button';
 import Card from './styled-component/Card';
@@ -147,8 +146,6 @@ function EditPost() {
     const navigate = useNavigate();
     const [postTitle, setPostTitle] = useState('');
 
-    const titleRef = useRef<HTMLInputElement | null>(null);
-
     const [file, setFile] = useState<File | null>(null);
     const [fileName, setFileName] = useState('Upload New Image...');
     const [fileUrlName, setFileUrlName] = useState('');
@@ -159,7 +156,7 @@ function EditPost() {
     useEffect(() => console.log(fileUrlName), [fileUrlName]);
 
     useEffect(() => {
-        axios.get(`/posts/${urlPostId}`)
+        axios.get(`/api/posts/${urlPostId}`)
             .then(
                 res => {
                     setPostData(res.data);
@@ -167,8 +164,8 @@ function EditPost() {
                     setPostTitle(title);
                     setContent(content);
                     if (image !== null && image !== 'null') {
-                        setFileOriginalUrlName(`/images/${image}`);
-                        setFileUrlName(`/images/${image}`);
+                        setFileOriginalUrlName(`/api/images/${image}`);
+                        setFileUrlName(`/api/images/${image}`);
                     }
 
                 }
@@ -184,14 +181,9 @@ function EditPost() {
         e.preventDefault();
         const formData = new FormData();
         if (newImageUploaded && file) {
-            const newFileName = uuid() + '.' + fileName.split('.').pop();
-            formData.append('file', file, newFileName);
+            formData.append('file', file);
         }
-        else {
-            formData.append('file', '');
-        }
-        if(titleRef.current?.value)
-            formData.append('title', titleRef.current.value);
+        formData.append('title', postTitle);
         formData.append('content', content);
         if(userData.userId)
             formData.append('userId', userData.userId);
@@ -211,7 +203,7 @@ function EditPost() {
                 );
         }
 
-        axios.put(`/posts/${urlPostId}`, formData, {
+        axios.put(`/api/posts/${urlPostId}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -251,7 +243,7 @@ function EditPost() {
                     <label htmlFor="title">
                         Title:
                     </label>
-                    <PostTitle placeholder="Enter Title of New Blog" id="title" ref={ titleRef } value={ postTitle } />
+                    <PostTitle placeholder="Enter Title of New Blog" id="title" onChange={ e => setPostTitle(e.target.value) } value={ postTitle } />
                     <PostFileUpload>
                         <PostFileInput type="file" id="file" onChange={ onFileInputChange } />
                         <PostFileLabel htmlFor="file">

@@ -47,7 +47,7 @@ function ProfileCard() {
         <UserProfileCard>
             {
                 photo && (
-                    <ProfilePhotoArea src={ `api/photos/${photo}` } alt="Image is not Available!!!"
+                    <ProfilePhotoArea src={ `/api/photos/${photo}` } alt="Image is not Available!!!"
                         hidden = { imageFail }
                         onError={ () => setImageFail(true) }
                     />

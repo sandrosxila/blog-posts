@@ -132,7 +132,7 @@ function PostCardLayout({ imageSource, title, content, readMoreLink, postUserId,
     const switchShowDeleteMessage = () => setShowDeleteMessage(!showDeleteMessage);
 
     const onDeleteClick = () => {
-        axios.delete(`api/posts/${postId}`)
+        axios.delete(`/api/posts/${postId}`)
             .then(res => {
                 console.log('IMAGE NAME', imageName);
                 if (imageName !== undefined && imageName !== null) {

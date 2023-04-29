@@ -17,10 +17,14 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UploadedFileFilter } from '../filters/uploaded-file.filter';
 import { FileUploader } from '../interceptors/file-uploader.interceptor';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    private readonly postsService: PostsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post()
   @Serialize(CreatePostDto)
@@ -31,7 +35,16 @@ export class PostsController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     const image = file.filename;
-    return await this.postsService.create(userId, title, content, image);
+    const user = await this.usersService.findOne(Number(userId));
+
+    if (!user) {
+      throw new HttpException(
+        `Couldn't find user with ${userId}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return await this.postsService.create(user, title, content, image);
   }
 
   @Get()
@@ -72,6 +85,6 @@ export class PostsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.postsService.remove(+id);
+    return this.postsService.remove(Number(id));
   }
 }

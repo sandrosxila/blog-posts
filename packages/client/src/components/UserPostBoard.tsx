@@ -45,8 +45,9 @@ function UserPostBoard() {
     const { userId } = useAppSelector(state => state.auth.userData);
 
     useEffect(() => {
-        axios.get(`/users/${userId}/posts`)
+        axios.get(`/api/users/${userId}/posts`)
             .then(res => {
+                console.log(res);
                 setPosts(res.data);
             });
     }, [setPosts, userId]);
@@ -63,13 +64,14 @@ function UserPostBoard() {
                     }
                 </h1>
                 {
+                    userId && 
                     posts.map(post => {
-                        const { title, image, content, userId, postId } = post;
+                        const { title, image, content, postId } = post;
                         return (
                             <PostCard
                                 key={ postId }
                                 title={ title }
-                                imageSource={ `/images/${image}` }
+                                imageSource={ `/api/images/${image}` }
                                 imageName={ image }
                                 content={ content }
                                 readMoreLink={ `/${userId}/posts/${postId}` }

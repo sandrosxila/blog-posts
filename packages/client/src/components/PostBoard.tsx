@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import PostCard from './PostCard';
 import ProfileCard from './ProfileCard';
 import UserActions from './UserActions';
+import { useAppSelector } from '../store';
 
 const PostBoardLayout = styled.div`
     display: grid;
@@ -63,8 +64,11 @@ const RightBar = styled.aside`
 function PostBoard() {
 
     const [posts, setPosts] = useState([]);
+
+    const { userId } = useAppSelector(state => state.auth.userData);
+
     useEffect(() => {
-        axios.get('api/posts')
+        axios.get('/api/posts')
             .then((res) => {
                 setPosts(res.data);
             }).catch(e => console.log(e));
@@ -82,8 +86,9 @@ function PostBoard() {
             </RightBar>
             <ContentBoard>
                 {
+                    userId &&
                     posts.map(post => {
-                        const { title, image, content, userId, postId } = post;
+                        const { title, image, content, postId } = post;
                         return (
                             <PostCard
                                 key={ postId }

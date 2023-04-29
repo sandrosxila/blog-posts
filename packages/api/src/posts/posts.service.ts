@@ -1,26 +1,18 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { Repository } from 'typeorm';
-import { UsersService } from 'src/users/users.service';
+import { User } from '../users/entities/user.entity';
+import { unlink } from 'fs/promises';
+import { join } from 'path';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Post) private readonly post: Repository<Post>,
-    private readonly usersService: UsersService,
   ) {}
 
-  async create(userId: string, title: string, content: string, image?: string) {
-    const user = await this.usersService.findOne(Number(userId));
-
-    if (!user) {
-      throw new HttpException(
-        `Couldn't find user with ${userId}`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
-
+  async create(user: User, title: string, content: string, image?: string) {
     const post = this.post.create({
       content,
       title,
@@ -47,6 +39,16 @@ export class PostsService {
     });
   }
 
+  async findPostsByUserId(id: number) {
+    return await this.post.find({
+      where: {
+        user: {
+          userId: id,
+        },
+      },
+    });
+  }
+
   async update(id: number, title: string, content: string, image: string) {
     return await this.post.save({
       postId: id,
@@ -56,7 +58,15 @@ export class PostsService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async remove(id: number) {
+    const post = await this.findOne(id);
+
+    try {
+      await unlink(join(process.cwd(), `/uploads/images/${post.image}`));
+    } catch (e) {
+      console.log(e);
+    }
+
+    return await this.post.remove(post);
   }
 }
