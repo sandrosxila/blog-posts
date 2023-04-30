@@ -49,13 +49,27 @@ export class PostsService {
     });
   }
 
-  async update(id: number, title: string, content: string, image: string) {
+  async update(
+    id: number,
+    title: string,
+    content: string,
+    image: string | null,
+  ) {
     return await this.post.save({
       postId: id,
       title,
       content,
       image,
     });
+  }
+
+  async removeImage(image: string) {
+    return await this.post
+      .createQueryBuilder()
+      .update()
+      .set({ image: null })
+      .where('image = :image', { image })
+      .execute();
   }
 
   async remove(id: number) {

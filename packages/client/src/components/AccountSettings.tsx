@@ -204,15 +204,14 @@ function AccountSettings() {
 
         if(e.target.files && e.target.files.length > 0){
             const formData = new FormData();
-            const newFileName = uuid() + '.' + e.target.files[0].name.split('.').pop();
-            formData.append('file', e.target.files[0], newFileName);
-            formData.append('photo', newFileName);
+            formData.append('file', e.target.files[0]);
 
             axios.put(`/api/users/${userId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((res) => {
+                const { photo: newFileName } = res.data;
                 setPhoto(newFileName);
                 dispatch(setUserData({ ...userData, photo: newFileName }));
                 setFileUrlName(`/api/photos/${newFileName}`);

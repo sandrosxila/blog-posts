@@ -6,11 +6,18 @@ import { User } from './entities/user.entity';
 import { AuthService } from './auth.service';
 import { UploadedFileFilter } from '../filters/uploaded-file.filter';
 import { Post } from '../posts/entities/post.entity';
-import { PostsService } from 'src/posts/posts.service';
+import { PostsService } from '../posts/posts.service';
+import { PhotosService } from '../photos/photos.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Post])],
   controllers: [UsersController],
-  providers: [UsersService, AuthService, UploadedFileFilter, PostsService],
+  providers: [
+    UsersService,
+    AuthService,
+    UploadedFileFilter,
+    PostsService,
+    PhotosService,
+  ],
 })
 export class UsersModule {}

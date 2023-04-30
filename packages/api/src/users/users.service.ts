@@ -40,11 +40,6 @@ export class UsersService {
     });
   }
 
-  async addPost(user: User, post: Post) {
-    user.posts.push(post);
-    this.user.save(user);
-  }
-
   async findOne(id: number) {
     return await this.user.findOneBy({ userId: id });
   }
@@ -55,8 +50,8 @@ export class UsersService {
 
   async update(id: number, userData: UpdateUserDto) {
     return await this.user.save({
-      userId: id,
       ...userData,
+      userId: id,
     });
   }
 

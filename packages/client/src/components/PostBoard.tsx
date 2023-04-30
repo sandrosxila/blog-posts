@@ -93,7 +93,7 @@ function PostBoard() {
                             <PostCard
                                 key={ postId }
                                 title={ title }
-                                imageSource={ `/api/images/${image}` }
+                                imageSource={ image ? `/api/images/${image}` : null }
                                 imageName={ image }
                                 content={ content }
                                 readMoreLink={ `/${userId}/posts/${postId}` }

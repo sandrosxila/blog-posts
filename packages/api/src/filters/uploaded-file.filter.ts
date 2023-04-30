@@ -23,6 +23,7 @@ export class UploadedFileFilter implements ExceptionFilter {
       try {
         await unlink(file.path);
       } catch (err) {
+        console.log('error')
         console.log(err);
       }
     }

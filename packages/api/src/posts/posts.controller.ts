@@ -18,12 +18,14 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { UploadedFileFilter } from '../filters/uploaded-file.filter';
 import { FileUploader } from '../interceptors/file-uploader.interceptor';
 import { UsersService } from 'src/users/users.service';
+import { ImagesService } from 'src/images/images.service';
 
 @Controller('posts')
 export class PostsController {
   constructor(
     private readonly postsService: PostsService,
     private readonly usersService: UsersService,
+    private readonly imagesService: ImagesService,
   ) {}
 
   @Post()
@@ -69,6 +71,7 @@ export class PostsController {
   async update(
     @Param('id') id: string,
     @Body() { title, content }: UpdatePostDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     const post = await this.postsService.findOne(Number(id));
     if (!post) {
@@ -80,7 +83,20 @@ export class PostsController {
 
     const image = post.image;
 
-    return await this.postsService.update(Number(id), title, content, image);
+    const newPost = await this.postsService.update(
+      Number(id),
+      title,
+      content,
+      file?.filename ?? null,
+    );
+
+    try {
+      await this.imagesService.remove(image);
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    return newPost;
   }
 
   @Delete(':id')

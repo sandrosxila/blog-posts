@@ -21,6 +21,7 @@ import { UserDto } from './dto/user.dto';
 import { FileUploader } from '../interceptors/file-uploader.interceptor';
 import { PostsService } from 'src/posts/posts.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PhotosService } from 'src/photos/photos.service';
 
 @Controller('users')
 export class UsersController {
@@ -28,6 +29,7 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
     private readonly postsService: PostsService,
+    private readonly photosService: PhotosService,
   ) {}
 
   @Serialize(UserDto)
@@ -82,7 +84,26 @@ export class UsersController {
 
   @Serialize(UserDto)
   @Put('/:id')
-  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    return await this.usersService.update(Number(id), body);
+  @FileUploader('./uploads/photos')
+  @UseFilters(UploadedFileFilter)
+  async updateUser(
+    @Param('id') id: string,
+    @Body() body: UpdateUserDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const { photo } = await this.usersService.findOne(Number(id));
+
+    const user = await this.usersService.update(
+      Number(id),
+      Object.assign(body, { photo: file.filename }),
+    );
+
+    try {
+      await this.photosService.remove(photo);
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    return user;
   }
 }

@@ -112,7 +112,7 @@ const EditLink = styled(Link)`
 `;
 
 type Props = { 
-    imageSource: string,
+    imageSource: string | null,
     title: string,
     content: string,
     readMoreLink: string,
@@ -173,7 +173,7 @@ function PostCardLayout({ imageSource, title, content, readMoreLink, postUserId,
                 )
             }
             {
-                !hideImage && (
+                !hideImage && imageSource && (
                     <PostImage src={ imageSource } alt="Loading ..." onError={ () => setHideImage(true) } />
                 )
             }

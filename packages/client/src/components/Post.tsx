@@ -38,9 +38,9 @@ function Post() {
 
     const { postId: urlPostId } = useParams(); 
 
-    const [postData, setPostData] = useState<{ title: string, image: string, content: string }>({
+    const [postData, setPostData] = useState<{ title: string, image: string | null, content: string }>({
         title: '',
-        image: '',
+        image: null,
         content: ''
     });
 
@@ -58,7 +58,10 @@ function Post() {
     return (
         <AddPostLayout>
             <PostCard>
-                <PostImage src={ `/api/images/${image}` } alt="Loading ..."/>
+                {
+                    image &&
+                        <PostImage src={ `/api/images/${image}` } alt="Loading ..."/>
+                }
                 <h1>
                     {title}
                 </h1>
