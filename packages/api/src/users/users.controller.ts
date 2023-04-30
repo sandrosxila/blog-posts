@@ -9,6 +9,8 @@ import {
   Param,
   UploadedFile,
   Put,
+  ParseFilePipe,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { LogInUserDto } from './dto/log-in-user.dto';
@@ -16,12 +18,12 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UploadedFileFilter } from '../filters/uploaded-file.filter';
 import { Response } from 'express';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dto/user.dto';
 import { FileUploader } from '../interceptors/file-uploader.interceptor';
-import { PostsService } from 'src/posts/posts.service';
+import { PostsService } from '../posts/posts.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PhotosService } from 'src/photos/photos.service';
+import { PhotosService } from '../photos/photos.service';
 
 @Controller('users')
 export class UsersController {
@@ -58,7 +60,13 @@ export class UsersController {
   async signUp(
     @Body() body: CreateUserDto,
     @Res() res: Response,
-    @UploadedFile('file') file: Express.Multer.File,
+    @UploadedFile(
+      'file',
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })],
+      }),
+    )
+    file: Express.Multer.File,
   ) {
     const { firstName, lastName, email, password } = body;
 
@@ -89,7 +97,13 @@ export class UsersController {
   async updateUser(
     @Param('id') id: string,
     @Body() body: UpdateUserDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      'file',
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })],
+      }),
+    )
+    file: Express.Multer.File,
   ) {
     const { photo } = await this.usersService.findOne(Number(id));
 
