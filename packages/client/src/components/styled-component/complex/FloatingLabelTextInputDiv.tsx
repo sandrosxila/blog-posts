@@ -1,7 +1,6 @@
 import React from 'react';
 
 import styled from 'styled-components';
-import { v4 as uuid } from 'uuid';
 
 import TextInput from '../TextInput';
 
@@ -54,7 +53,7 @@ type Props = {
 
 
 function FloatingLabelTextInputDiv({ className: inputDivClassName, id: inputDivId, ...filteredProps }: Props) {
-    const textInputId = uuid();
+    const textInputId = React.useId();
     
     return (
         <InputDiv className={ inputDivClassName } id={ inputDivId }>

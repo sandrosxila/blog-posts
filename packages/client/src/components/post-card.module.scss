@@ -1,0 +1,103 @@
+@use "src/styles/layouts";
+
+.cardLayout {
+  @extend %card;
+  width: 32rem;
+  height: auto;
+
+  &:hover div.toolbar {
+    opacity: 1;
+  }
+}
+
+.postImage {
+  object-fit: fill;
+  width: 100%;
+  height: 50%;
+}
+
+.postBody {
+  margin: 0 1.5rem;
+  width: 90%;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.button {
+  background: #4361ee;
+  color: white;
+  border: 1px solid #364fc0;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  margin: 1.2rem 1.5rem;
+  box-shadow: none;
+  padding: 0.5rem;
+  height: 1rem;
+  line-height: 1rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: all ease-in-out 0.3s;
+
+  &:hover {
+    background: #364fc0;
+    cursor: pointer;
+    box-shadow: 0 0 8px 2px #4362ee44;
+  }
+}
+
+.content {
+  max-height: 7rem;
+  overflow: hidden;
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(transparent 45%, white);
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.faPencil {
+  color: black;
+  font-size: 1.7rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
+.faTimes {
+  svg {
+    color: crimson;
+    font-size: 1.7rem;
+    height: 2rem;
+    cursor: pointer;
+  }
+}
+
+.toolBar {
+  transition: all ease-in 0.3s;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 0.3rem;
+  opacity: 0;
+}
+
+.postCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

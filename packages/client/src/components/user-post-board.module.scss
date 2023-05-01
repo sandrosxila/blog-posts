@@ -1,0 +1,29 @@
+.postBoardLayout {
+    display: grid;
+    grid-template-areas: 'left-bar content-board right-bar';
+    grid-template-columns: 1fr 2fr 1fr;
+    padding: 0 4rem;
+}
+
+.leftBar {
+    grid-area: left-bar;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 2rem;
+}
+
+.contentBoard {
+    grid-area: content-board;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap:2rem;
+    padding: 2rem 5rem;
+}
+
+.rightBar {
+    grid-area: right-bar;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}

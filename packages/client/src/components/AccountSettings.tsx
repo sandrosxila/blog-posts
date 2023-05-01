@@ -4,7 +4,6 @@ import { faPencilAlt, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import styled from 'styled-components';
-import { v4 as uuid } from 'uuid';
 
 import Card from './styled-component/Card';
 import TextInput from './styled-component/TextInput';

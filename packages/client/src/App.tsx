@@ -1,6 +1,12 @@
 import React from 'react';
-import './App.css';
 
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    QueryClient,
+    QueryClientProvider,
+} from '@tanstack/react-query';
 import { Route, Routes, Outlet, Navigate } from 'react-router-dom';
 
 import AboutUs from './components/AboutUs';
@@ -10,9 +16,9 @@ import EditPost from './components/EditPost';
 import Navbar from './components/layout/Navbar';
 import NotFound from './components/NotFound';
 import Post from './components/Post';
-import PostBoard from './components/PostBoard';
-import UserPostBoard from './components/UserPostBoard';
-import Welcome from './components/Welcome';
+import PostBoard from './components/post-board';
+import UserPostBoard from './components/user-post-board';
+import Welcome from './components/welcome';
 import { AuthState } from './slices/authSlice';
 import { useAppSelector } from './store';
 
@@ -27,12 +33,13 @@ const AuthGuard = () => {
     return <Outlet/>;
 };
 
+const queryClient = new QueryClient();
 
 function App() {
 
 
     return (
-        <>
+        <QueryClientProvider client={ queryClient }>
             <header>
                 <Navbar />
             </header>
@@ -52,7 +59,7 @@ function App() {
                     <Route path="*" element={ <NotFound/> } />
                 </Routes>
             </main>
-        </>
+        </QueryClientProvider>
     );
 }
 
