@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import classNames from 'classnames';
 
-import LogIn from './auth/LogIn';
-import SignUp from './auth/SignUp';
+import LogIn from './auth/log-in';
+import SignUp from './auth/sign-up';
 import styles from './welcome.module.scss';
 
 function Welcome() {
@@ -13,13 +13,18 @@ function Welcome() {
         setShowSignUp(!showSignUp);
     };
 
-
     return (
         <div className={ styles.welcomePageLayout }>
             <div className={ styles.welcomeBoard }>Welcome To Blog-Posts!!!</div>
             <div className={ styles.logInSignUpBoard }>
-                <div className={ classNames( styles.logInSignUpCard) }>
-                    <div className={ classNames(styles.logInSignUpLayout, { [styles.showSignUp]: showSignUp }) }>
+                <div className={ classNames(styles.logInSignUpCard) }>
+                    <div
+                        className={
+                            classNames(styles.logInSignUpLayout, {
+                                [styles.showSignUp]: showSignUp,
+                            })
+                        }
+                    >
                         <LogIn onLogInLabelClick={ onLoginSignUpLabelClick } />
                         <SignUp onSignUpLabelClick={ onLoginSignUpLabelClick } />
                     </div>

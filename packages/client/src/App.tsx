@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-query';
 import { Route, Routes, Outlet, Navigate } from 'react-router-dom';
 
-import AboutUs from './components/AboutUs';
+import AboutUs from './components/about-us';
 import AccountSettings from './components/AccountSettings';
 import AddPost from './components/AddPost';
 import EditPost from './components/EditPost';

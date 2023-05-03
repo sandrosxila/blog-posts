@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import styles from './post-board.module.scss';
 import PostCard from './post-card';
 import ProfileCard from './ProfileCard';
-import UserActions from './UserActions';
+import UserActions from './user-actions';
 import { getAllPosts } from '../api/posts';
 import { Post } from '../models';
 import { useAppSelector } from '../store';

@@ -1,0 +1,91 @@
+@use 'src/styles/buttons';
+
+.logInLayout { 
+    flex: 1 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+}
+
+.logInForm {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    width:16rem;
+    padding:0;
+    gap: 0.3rem;
+
+    @media only screen and (max-width: 576px){
+        width: 12rem;
+    }
+}
+
+.logInHeader {
+    margin-top: 0;
+}
+
+.logInButton {
+    @extend %button;
+    width: 17rem;
+    border-radius:1rem;
+    margin: 0.2rem;
+    background:#4361ee;
+    color: white;
+    border: 1px solid transparent;
+
+    &:hover{
+        border: 1px solid #364fc0;
+        background: #364fc0;
+    }
+
+    &:focus{
+        outline:none;
+        box-shadow: 0 0 8px 2px #4362ee44 ;
+    }
+
+    @media only screen and (max-width: 576px){
+        width: 14rem;
+    }
+}
+
+.logInFormInput {
+    & > input:focus + label{
+        color:#6910a8 !important;
+    }
+    
+    & > input{
+        --box-shadow-color: #6910a818 !important;
+    }
+    
+    @media only screen and (max-width: 576px){
+        & > input{
+            width:13rem !important;
+        }
+    }
+}
+
+.logInLabel {
+    font-size:0.73rem;
+    align-self: flex-start;
+    // margin: -0.3rem 0 0.3rem 0;
+    color:#4361ee;
+    cursor: pointer;
+    &:active{
+        text-shadow: 0 0 1px #4362ee81;
+    }
+    @media only screen and (max-width: 576px){
+        font-size:0.6rem;
+        align-self: center;
+    }
+}
+
+.logInMessageLabel {
+    font-size:0.73rem;
+    align-self: flex-start;
+    color: crimson;
+    cursor: pointer;
+    &:active{
+        text-shadow: 0 0 1px #4362ee81;
+    }
+}
