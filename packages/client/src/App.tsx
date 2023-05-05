@@ -10,12 +10,12 @@ import {
 import { Route, Routes, Outlet, Navigate } from 'react-router-dom';
 
 import AboutUs from './components/about-us';
-import AccountSettings from './components/AccountSettings';
+import AccountSettings from './components/account-settings';
 import AddPost from './components/AddPost';
 import EditPost from './components/EditPost';
 import Navbar from './components/layout/Navbar';
-import NotFound from './components/NotFound';
-import Post from './components/Post';
+import NotFound from './components/not-found';
+import Post from './components/post';
 import PostBoard from './components/post-board';
 import UserPostBoard from './components/user-post-board';
 import Welcome from './components/welcome';

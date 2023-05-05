@@ -1,5 +1,9 @@
 import axios from 'axios';
 
-export const getAllPosts = () => axios.get('/api/posts').then(({ data }) => data);
+import { Post } from '../models';
+
+export const getPost = (postId: string) => axios.get<Post>(`/api/posts/${postId}`).then(({ data }) => data);
+
+export const getAllPosts = () => axios.get<Post[]>('/api/posts').then(({ data }) => data);
 
 export const deletePost = (postId: string) => axios.delete(`/api/posts/${postId}`);

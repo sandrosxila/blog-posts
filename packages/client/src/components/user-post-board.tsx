@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import PostCard from './post-card';
-import ProfileCard from './ProfileCard';
+import ProfileCard from './profile-card';
 import styles from './user-post-board.module.scss';
 import UserActions from './user-actions';
 import { getUserPosts } from '../api/users';

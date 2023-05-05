@@ -1,8 +1,4 @@
-import React from 'react';
-
-import styled from 'styled-components';
-
-const NotFoundPageLayout = styled.div`
+.notFoundPageLayout {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -32,9 +28,9 @@ const NotFoundPageLayout = styled.div`
             clip-path: polygon(0 11.5%, 100% 70%, 100% 100%, 0 100%);
         }
     }
-`;
+}
 
-const NotFoundBoard = styled.div`
+.notFoundBoard {
     /* background: orange; */
     color: #5a189a;
     flex: 2 0 0;
@@ -50,18 +46,4 @@ const NotFoundBoard = styled.div`
         align-items: center;
         justify-content: center;
     }
-`;
-
-
-function LogIn() {
-
-    return (
-        <NotFoundPageLayout>
-            <NotFoundBoard>
-                Page Not Found!!!
-            </NotFoundBoard>
-        </NotFoundPageLayout>
-    );
 }
-
-export default LogIn;
