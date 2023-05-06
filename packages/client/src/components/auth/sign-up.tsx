@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './sign-up.module.scss';
+import { userSignUp } from '../../api/users';
 import { setUserData } from '../../slices/authSlice';
 import { useAppDispatch } from '../../store';
 import FloatingLabelTextInputDiv from '../styled-component/complex/FloatingLabelTextInputDiv';
-
 
 type Props = {
     onSignUpLabelClick?: React.MouseEventHandler<HTMLLabelElement>;
@@ -35,23 +34,14 @@ function SignUp({ onSignUpLabelClick }: Props) {
     const [fileUrlName, setFileUrlName] = useState('');
     const [newImageUploaded, setNewImageUploaded] = useState(false);
 
-    const [response, setResponse] = useState<any>({ message: '' });
+    const [error, setError] = useState<string | null>(null);
 
     const { firstName, lastName, email, password, repeatedPassword } =
     credentials;
-    const { message } = response;
-
-    useEffect(() => {
-        if (response.message === 'data added successfully!!!') {
-            console.log(response);
-            dispatch(setUserData(response.userData as any));
-            navigate('/');
-        }
-    }, [response, navigate, dispatch]);
 
     const validateData = () => repeatedPassword === password && acceptPassword;
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('firstName', firstName);
@@ -66,17 +56,16 @@ function SignUp({ onSignUpLabelClick }: Props) {
         }
         console.log(formData);
         if (validateData()) {
-            axios
-                .post('/api/users/signup', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
-                .then((res) => {
-                    setResponse(res.data);
-                });
+            try {
+                const { userData } = await userSignUp(formData);
+                dispatch(setUserData(userData));
+                navigate('/');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (e: any) {
+                setError(e.response.data.message);
+            }
         } else {
-            setResponse({ message: 'Password is not Strong Enough!!!' });
+            setError('Password is not Strong Enough!!!');
         }
     };
 
@@ -173,13 +162,21 @@ function SignUp({ onSignUpLabelClick }: Props) {
                     {!arePasswordsEqual && 'Passwords Don\'t Match'}
                 </label>
                 <div className={ styles.signUpFileUpload }>
-                    <input className={ styles.signUpFileInput } type="file" id="file" onChange={ onFileInputChange } />
+                    <input
+                        className={ styles.signUpFileInput }
+                        type="file"
+                        id="file"
+                        onChange={ onFileInputChange }
+                    />
                     <label className={ styles.signUpFileLabel } htmlFor="file">
                         {fileName.length > 15 ? `${fileName.slice(0, 15)}...` : fileName}
                     </label>
                     {
                         fileUrlName && (
-                            <label className={ styles.signUpFileCancelLabel } onClick={ onImageDeleteClick }>
+                            <label
+                                className={ styles.signUpFileCancelLabel }
+                                onClick={ onImageDeleteClick }
+                            >
                                 Undo Uploaded File
                             </label>
                         )
@@ -188,8 +185,10 @@ function SignUp({ onSignUpLabelClick }: Props) {
                 <label className={ styles.signUpLabel } onClick={ onSignUpLabelClick }>
                     <FontAwesomeIcon icon={ faArrowLeft } size="sm" /> Back to Log In
                 </label>
-                {message && <label className={ styles.signUpMessageLabel }>{message}</label>}
-                <button className={ styles.signUpButton } type="submit">Sign Up</button>
+                {error && <label className={ styles.signUpMessageLabel }>{error}</label>}
+                <button className={ styles.signUpButton } type="submit">
+                    Sign Up
+                </button>
             </form>
         </div>
     );

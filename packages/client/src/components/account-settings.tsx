@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 
 import { faPencilAlt, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 
 import styles from './account-settings.module.scss';
+import { updateUser, updateUserPhoto } from '../api/users';
 import { setUserData } from '../slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../store';
-
 
 function AccountSettings() {
     const dispatch = useAppDispatch();
@@ -23,17 +22,17 @@ function AccountSettings() {
 
     const [message, setMessage] = useState('');
 
-    const changeEditFirstName = () => {
+    const changeEditFirstName = async () => {
         setEditFirstName(!editFirstName);
-        if (userData.firstName !== firstName) {
-            axios
-                .put(`/api/users/${userId}`, { firstName })
-                .then((_) => dispatch(setUserData({ ...userData, firstName })))
-                .catch((e) => {
-                    console.log(e);
-                    setMessage('First Name is not Updated in Database');
-                    setFirstName(userData.firstName);
-                });
+        if (userData.firstName !== firstName && userId && firstName) {
+            try {
+                await updateUser(userId, { firstName });
+                dispatch(setUserData({ ...userData, firstName }));
+                setMessage('');
+            } catch (e: any) {
+                setMessage('First Name is not Updated in Database');
+                setFirstName(userData.firstName);
+            }
         }
     };
 
@@ -41,16 +40,17 @@ function AccountSettings() {
     const onLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         setLastName(e.target.value);
     const [editLastName, setEditLastName] = useState(false);
-    const changeEditLastName = () => {
+    const changeEditLastName = async () => {
         setEditLastName(!editLastName);
-        if (userData.lastName !== lastName) {
-            axios
-                .put(`/api/users/${userId}`, { lastName })
-                .then((_) => dispatch(setUserData({ ...userData, lastName })))
-                .catch((e) => {
-                    setMessage('First Name is not Updated in Database');
-                    setLastName(userData.lastName);
-                });
+        if (userData.lastName !== lastName && userId && lastName) {
+            try {
+                await updateUser(userId, { lastName });
+                dispatch(setUserData({ ...userData, lastName }));
+                setMessage('');
+            } catch (e: any) {
+                setMessage('Last Name is not Updated in Database');
+                setFirstName(userData.lastName);
+            }
         }
     };
 
@@ -58,40 +58,37 @@ function AccountSettings() {
     const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         setEmail(e.target.value);
     const [editEmail, setEditEmail] = useState(false);
-    const changeEditEmail = () => {
+    const changeEditEmail = async () => {
         setEditEmail(!editEmail);
-        if (userData.email !== email) {
-            axios
-                .put(`/api/users/${userId}`, { email })
-                .then((_) => dispatch(setUserData({ ...userData, email })))
-                .catch((e) => {
-                    setMessage('First Name is not Updated in Database');
-                    setEmail(userData.email);
-                });
+        if (userData.email !== email && userId && email) {
+            try {
+                await updateUser(userId, { email });
+                dispatch(setUserData({ ...userData, email }));
+                setMessage('');
+            } catch (e: any) {
+                setMessage('Email is not Updated in Database');
+                setFirstName(userData.email);
+            }
         }
     };
 
     const [photo, setPhoto] = useState(userData.photo);
     const [fileUrlName, setFileUrlName] = useState(`api/photos/${photo}`);
 
-    const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
+    const onFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0 && userId) {
             const formData = new FormData();
             formData.append('file', e.target.files[0]);
 
-            axios
-                .put(`/api/users/${userId}`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
-                .then((res) => {
-                    const { photo: newFileName } = res.data;
-                    setPhoto(newFileName);
-                    dispatch(setUserData({ ...userData, photo: newFileName }));
-                    setFileUrlName(`/api/photos/${newFileName}`);
-                })
-                .catch((e) => console.log(e));
+            try {
+                const { photo: newFileName } = await updateUserPhoto(userId, formData);
+                setPhoto(newFileName);
+                dispatch(setUserData({ ...userData, photo: newFileName }));
+                setFileUrlName(`/api/photos/${newFileName}`);
+                setMessage('');
+            } catch (e: any) {
+                setMessage(e.response.data.message);
+            }
         }
     };
 

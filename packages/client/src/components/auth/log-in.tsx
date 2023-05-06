@@ -28,8 +28,8 @@ function LogIn({ onLogInLabelClick }: Props) {
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const res = await axios.post('/api/users/login', credentials);
-            dispatch(setUserData(res.data));
+            const { data } = await axios.post('/api/users/login', credentials);
+            dispatch(setUserData(data));
             navigate('/');
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (e: any) {

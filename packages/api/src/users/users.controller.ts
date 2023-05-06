@@ -63,7 +63,10 @@ export class UsersController {
     @UploadedFile(
       'file',
       new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })],
+        validators: [
+          new FileTypeValidator({ fileType: /(jpg|jpeg|png|webp)$/ }),
+        ],
+        fileIsRequired: false,
       }),
     )
     file: Express.Multer.File,
@@ -75,7 +78,7 @@ export class UsersController {
       lastName,
       email,
       password,
-      file.filename,
+      file?.filename,
     );
 
     res.status(HttpStatus.CREATED).send({
@@ -100,20 +103,29 @@ export class UsersController {
     @UploadedFile(
       'file',
       new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })],
+        validators: [
+          new FileTypeValidator({ fileType: /(jpg|jpeg|png|webp)$/ }),
+        ],
+        fileIsRequired: false,
       }),
     )
     file: Express.Multer.File,
   ) {
-    const { photo } = await this.usersService.findOne(Number(id));
+    const shouldReplacePhoto = !!file?.filename;
+
+    const { photo = null } = shouldReplacePhoto
+      ? await this.usersService.findOne(Number(id))
+      : {};
 
     const user = await this.usersService.update(
       Number(id),
-      Object.assign(body, { photo: file.filename }),
+      Object.assign(body, shouldReplacePhoto ? { photo: file.filename } : {}),
     );
 
     try {
-      await this.photosService.remove(photo);
+      if (photo && shouldReplacePhoto) {
+        await this.photosService.remove(photo);
+      }
     } catch (e) {
       console.log(e.message);
     }

@@ -19,11 +19,13 @@ export class UploadedFileFilter implements ExceptionFilter {
 
     const { file } = request;
 
+    console.log(file);
+
     if (file) {
       try {
         await unlink(file.path);
       } catch (err) {
-        console.log('error')
+        console.log('error');
         console.log(err);
       }
     }

@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import ReactHtmlParser from 'react-html-parser';
 import { Link } from 'react-router-dom';
 
-import DeleteMessage from './DeleteMessage';
+import DeleteMessage from './delete-message';
 import styles from './post-card.module.scss';
 import { deleteImage } from '../api/images';
 import { deletePost } from '../api/posts';

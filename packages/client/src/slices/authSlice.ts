@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export type UserData = {
+    userId: string | null,
+    firstName: string | null,
+    lastName: string | null,
+    email: string | null,
+    photo: string | null
+};
+
 export type AuthState = {
     isLoggedIn: boolean,
-    userData: {
-        userId: string | null,
-        firstName: string | null,
-        lastName: string | null,
-        email: string | null,
-        photo: string | null
-    },
+    userData: UserData,
 };
 
 export const slice = createSlice({

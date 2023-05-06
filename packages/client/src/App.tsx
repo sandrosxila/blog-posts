@@ -12,7 +12,7 @@ import { Route, Routes, Outlet, Navigate } from 'react-router-dom';
 import AboutUs from './components/about-us';
 import AccountSettings from './components/account-settings';
 import AddPost from './components/AddPost';
-import EditPost from './components/EditPost';
+import EditPost from './components/edit-post';
 import Navbar from './components/layout/Navbar';
 import NotFound from './components/not-found';
 import Post from './components/post';

@@ -33,7 +33,7 @@ export class AuthService {
     lastName: string,
     email: string,
     password: string,
-    photo: string,
+    photo?: string,
   ) {
     const [user] = await this.usersService.find(email);
 

@@ -4,7 +4,6 @@ import axios from 'axios';
 import JoditEditor from 'jodit-react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { v4 as uuid } from 'uuid';
 
 import Button from './styled-component/Button';
 import Card from './styled-component/Card';
