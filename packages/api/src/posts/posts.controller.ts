@@ -47,7 +47,7 @@ export class PostsController {
     )
     file: Express.Multer.File,
   ) {
-    const image = file.filename;
+    const image = file?.filename;
     const user = await this.usersService.findOne(Number(userId));
 
     if (!user) {

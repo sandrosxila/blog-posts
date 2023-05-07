@@ -26,14 +26,14 @@ function AddPost() {
 
     const userData = useAppSelector((state) => state.auth.userData);
 
-    console.log(userData);
-
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (file && titleRef.current?.value && userData.userId) {
+        if (titleRef.current?.value && userData.userId) {
             const formData = new FormData();
 
-            formData.append('file', file);
+            if (file) {
+                formData.append('file', file);
+            }
             formData.append('title', titleRef.current.value);
             formData.append('content', content);
             formData.append('userId', userData.userId);
@@ -51,6 +51,9 @@ function AddPost() {
                 .catch(() => {
                     setAlertMessage('Unable To Add Post');
                 });
+        }
+        else {
+            setAlertMessage('Please fill all fields');
         }
     };
 

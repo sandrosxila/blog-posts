@@ -7,7 +7,7 @@ function AboutUs() {
         <div className={ styles.aboutPageLayout }>
             <div className={ styles.aboutUsBoard }>This is Blog-Posts Web-Page.</div>
             <div className={ styles.detailsBoard }>
-                The Website uses React and Express JS.
+                The Website uses React and Nest JS.
             </div>
         </div>
     );

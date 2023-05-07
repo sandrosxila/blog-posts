@@ -23,7 +23,7 @@ function getDbConfig() {
 export const dbConfig: DataSourceOptions = {
   ...getDbConfig(),
   synchronize: false,
-  migrations: ['db/migrations/*.js'],
+  migrations: ['dist/db/migrations/*.js'],
 };
 
 const apiDataSource = new DataSource(dbConfig);

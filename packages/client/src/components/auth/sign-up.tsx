@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -35,6 +35,8 @@ function SignUp({ onSignUpLabelClick }: Props) {
     const [newImageUploaded, setNewImageUploaded] = useState(false);
 
     const [error, setError] = useState<string | null>(null);
+
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const { firstName, lastName, email, password, repeatedPassword } =
     credentials;
@@ -97,7 +99,10 @@ function SignUp({ onSignUpLabelClick }: Props) {
         setNewImageUploaded(false);
         setFile(null);
         setFileName('Upload Photo...');
+        URL.revokeObjectURL(fileUrlName);
         setFileUrlName('');
+        if(inputRef.current)
+            inputRef.current.value = '';
     };
 
     const onChangeScore = (score: number) => {
@@ -167,6 +172,7 @@ function SignUp({ onSignUpLabelClick }: Props) {
                         type="file"
                         id="file"
                         onChange={ onFileInputChange }
+                        ref={ inputRef }
                     />
                     <label className={ styles.signUpFileLabel } htmlFor="file">
                         {fileName.length > 15 ? `${fileName.slice(0, 15)}...` : fileName}

@@ -47,14 +47,12 @@ export class AuthService {
 
     const generatedPassword = salt + '.' + hash.toString('hex');
 
-    await this.usersService.create(
+    return await this.usersService.create(
       firstName,
       lastName,
       email,
       generatedPassword,
       photo,
     );
-
-    return user;
   }
 }

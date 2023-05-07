@@ -11,10 +11,7 @@ import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      ...dbConfig,
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(dbConfig),
     MulterModule.register({
       dest: './uploads',
     }),

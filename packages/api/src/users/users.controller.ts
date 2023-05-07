@@ -73,7 +73,7 @@ export class UsersController {
   ) {
     const { firstName, lastName, email, password } = body;
 
-    await this.authService.signUp(
+    const user = await this.authService.signUp(
       firstName,
       lastName,
       email,
@@ -84,6 +84,7 @@ export class UsersController {
     res.status(HttpStatus.CREATED).send({
       status: HttpStatus.CREATED,
       userData: {
+        userId: user.userId,
         firstName,
         lastName,
         email,
