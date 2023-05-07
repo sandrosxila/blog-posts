@@ -10,19 +10,17 @@ import { getAllPosts } from '../api/posts';
 import { Post } from '../models';
 import { useAppSelector } from '../store';
 
-
 function PostBoard() {
-
     const [posts, setPosts] = useState<Post[]>([]);
 
-    const { userId } = useAppSelector(state => state.auth.userData);
+    const { userId } = useAppSelector((state) => state.auth.userData);
 
     useQuery({
         queryKey: ['all_posts'],
         queryFn: () => getAllPosts(),
         onSuccess: (data) => {
             setPosts(data);
-        }
+        },
     });
 
     return (
@@ -31,29 +29,28 @@ function PostBoard() {
                 <ProfileCard />
             </aside>
             <aside className={ styles.rightBar }>
-                <UserActions/>
+                <UserActions />
             </aside>
             <div className={ styles.contentBoard }>
                 {
                     userId &&
-                    posts.map(post => {
-                        const { title, image, content, postId } = post;
-                        return (
-                            <PostCard
-                                key={ postId }
-                                title={ title }
-                                imageName={ image }
-                                content={ content }
-                                postUserId={ userId }
-                                postId={ postId }
-                                setPosts={ setPosts }
-                                getPosts={ getAllPosts }
-                            />
-                        );
-                    })
+          posts.map((post) => {
+              const { title, image, content, postId } = post;
+              return (
+                  <PostCard
+                      key={ postId }
+                      title={ title }
+                      imageName={ image }
+                      content={ content }
+                      postUserId={ userId }
+                      postId={ postId }
+                      setPosts={ setPosts }
+                      getPosts={ getAllPosts }
+                  />
+              );
+          })
                 }
             </div>
-            
         </div>
     );
 }

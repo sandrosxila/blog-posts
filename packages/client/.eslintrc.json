@@ -90,13 +90,6 @@
       }
     ],
     "@typescript-eslint/object-curly-spacing": ["warn", "always"],
-    "@typescript-eslint/indent": [
-      "warn",
-      4,
-      {
-        "ignoredNodes": ["JSXElement"]
-      }
-    ],
     "@typescript-eslint/no-non-null-assertion": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",

@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-    QueryClient,
-    QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Route, Routes, Outlet, Navigate } from 'react-router-dom';
 
 import AboutUs from './components/about-us';
@@ -19,22 +16,21 @@ import Welcome from './components/welcome';
 import { AuthState } from './slices/authSlice';
 import { useAppSelector } from './store';
 
-
 const AuthGuard = () => {
-    const isLoggedIn = useAppSelector((state: { auth: AuthState }) => state.auth.isLoggedIn);
+    const isLoggedIn = useAppSelector(
+        (state: { auth: AuthState }) => state.auth.isLoggedIn
+    );
 
-    if(!isLoggedIn){
+    if (!isLoggedIn) {
         return <Navigate to={ '/welcome' } />;
-    } 
+    }
 
-    return <Outlet/>;
+    return <Outlet />;
 };
 
 const queryClient = new QueryClient();
 
 function App() {
-
-
     return (
         <QueryClientProvider client={ queryClient }>
             <header>
@@ -43,17 +39,17 @@ function App() {
             <main>
                 <Routes>
                     <Route element={ <AuthGuard /> }>
-                        <Route path='/' element={ <PostBoard/> } />
-                        <Route path='/account-settings' element={ <AccountSettings/> } />
-                        <Route path='/add' element={ <AddPost/> } />
-                        <Route path='/:userId/posts' element={ <UserPostBoard/> } />
-                        <Route path='/:userId/posts/:postId' element={ <Post/> } />
-                        <Route path='/edit/:postId' element={ <EditPost/> } />
+                        <Route path="/" element={ <PostBoard /> } />
+                        <Route path="/account-settings" element={ <AccountSettings /> } />
+                        <Route path="/add" element={ <AddPost /> } />
+                        <Route path="/:userId/posts" element={ <UserPostBoard /> } />
+                        <Route path="/:userId/posts/:postId" element={ <Post /> } />
+                        <Route path="/edit/:postId" element={ <EditPost /> } />
                     </Route>
-                
-                    <Route path='/welcome' element={ <Welcome/> } />
-                    <Route path={ '/about-us' } element={ <AboutUs/> } />
-                    <Route path="*" element={ <NotFound/> } />
+
+                    <Route path="/welcome" element={ <Welcome /> } />
+                    <Route path={ '/about-us' } element={ <AboutUs /> } />
+                    <Route path="*" element={ <NotFound /> } />
                 </Routes>
             </main>
         </QueryClientProvider>

@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import PostCard from './post-card';
 import ProfileCard from './profile-card';
-import styles from './user-post-board.module.scss';
 import UserActions from './user-actions';
+import styles from './user-post-board.module.scss';
 import { getUserPosts } from '../api/users';
 import { Post } from '../models';
 import { useAppSelector } from '../store';
@@ -20,7 +20,7 @@ function UserPostBoard() {
         queryFn: () => getUserPosts(userId!),
         onSuccess: (data) => {
             setPosts(data);
-        }
+        },
     });
 
     const getPosts = React.useCallback(() => getUserPosts(userId!), [userId]);
@@ -33,20 +33,19 @@ function UserPostBoard() {
             <div className={ styles.contentBoard }>
                 <h1>Your Posts</h1>
                 {
-                    userId && (
-                        posts.map(({ title, image, content, postId }) => (
-                            <PostCard
-                                key={ postId }
-                                title={ title }
-                                imageName={ image }
-                                content={ content }
-                                postUserId={ userId }
-                                postId={ postId }
-                                setPosts={ setPosts }
-                                getPosts={ getPosts }
-                            />
-                        ))
-                    )
+                    userId &&
+          posts.map(({ title, image, content, postId }) => (
+              <PostCard
+                  key={ postId }
+                  title={ title }
+                  imageName={ image }
+                  content={ content }
+                  postUserId={ userId }
+                  postId={ postId }
+                  setPosts={ setPosts }
+                  getPosts={ getPosts }
+              />
+          ))
                 }
             </div>
             <aside className={ styles.rightBar }>

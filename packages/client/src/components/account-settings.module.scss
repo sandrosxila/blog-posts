@@ -1,131 +1,126 @@
-@use 'src/styles/inputs';
-@use 'src/styles/layouts';
+@use "src/styles/inputs";
+@use "src/styles/layouts";
 
 .accountSettingsLayout {
-    display: flex;
-    justify-content:center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 4rem);
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
     height: calc(100vh - 4rem);
+    background: #b4a1f7;
+    clip-path: polygon(45.5% 0, 100% 0%, 100% 100%, 32% 100%);
+    z-index: -1;
 
-    &:before{
-        content:'';
-        position: absolute;
-        width: 100%;
-        height: calc(100vh - 4rem);
-        background: #b4a1f7;
-        clip-path: polygon(45.5% 0,100% 0%,100% 100%,32% 100%);
-        z-index: -1;
-
-        
-        @media only screen and (max-width: 976px){
-            flex-direction: column;
-            clip-path: polygon(0 11.5%, 100% 70%, 100% 100%, 0 100%);
-        }
+    @media only screen and (max-width: 976px) {
+      flex-direction: column;
+      clip-path: polygon(0 11.5%, 100% 70%, 100% 100%, 0 100%);
     }
+  }
 }
 
 .accountSettingsCard {
-    @extend %card;
-    height:auto;
-    width:auto;
-    display:flex;
-    flex-direction:column;
+  @extend %card;
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-
 .changeAccountForm {
-    width:21rem;
-    display:flex;
-    flex-direction:column;
-    gap: 1.5rem;
-    padding: 1rem;
-    position:relative;
+  width: 21rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  position: relative;
 }
 
 .profilePhotoArea {
-    border-radius: 50%;
-    width: 12rem;
-    height: 12rem;
-    object-fit: contain;
-    transition: all ease-in 0.3s;
-    align-self: center;
-    background: url();
-    background-size: 12rem;
+  border-radius: 50%;
+  width: 12rem;
+  height: 12rem;
+  object-fit: contain;
+  transition: all ease-in 0.3s;
+  align-self: center;
+  background-size: 12rem;
 
-    &:hover{
-        filter: brightness(50%);
-    }
-    
+  &:hover {
+    filter: brightness(50%);
+  }
 }
 
 .userData {
-    text-align: center;
-    margin:0;
-    display:flex;
-    gap:0.2rem;
-    width:100%;
-    align-items:center;
-    justify-content:flex-start;
+  text-align: center;
+  margin: 0;
+  display: flex;
+  gap: 0.2rem;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
 
-    &:hover > svg{
-        opacity:1;
-    } 
+  &:hover > svg {
+    opacity: 1;
+  }
 }
 
 .faPencil {
-    color: #550f86;
-    font-size:1.7rem;
-    height:1rem;
-    cursor: pointer;
-    opacity:0;
-    transition: all 0.2s ease-in;
+  color: #550f86;
+  font-size: 1.7rem;
+  height: 1rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease-in;
 }
 
 .faCheck {
-    color: seagreen;
-    font-size:1.7rem;
-    height:1.2rem;
-    cursor: pointer;
-    opacity:0;
-    transition: all 0.2s ease-in;
+  color: seagreen;
+  font-size: 1.7rem;
+  height: 1.2rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease-in;
 }
 
 .changeAccountKey {
-    color:#6910a8;
-    width: 9.68rem;
+  color: #6910a8;
+  width: 9.68rem;
 }
 
 .changeAccountValue {
-    color:#6910a8;
-    height:1.5rem;
-    font-size: 1rem;
-    padding: 0.2625rem 0.55rem;
-    margin:0;
-    flex: 1 0 0;
+  color: #6910a8;
+  height: 1.5rem;
+  font-size: 1rem;
+  padding: 0.2625rem 0.55rem;
+  margin: 0;
+  flex: 1 0 0;
 }
 
-
 .changeAccountFormInput {
-    @extend %textInput;
-    --box-shadow-color: #6910a818;
-    height:1.5rem;
-    width:8rem;
-    flex: 1 0 auto;
+  @extend %textInput;
+  --box-shadow-color: #6910a818;
+  height: 1.5rem;
+  width: 8rem;
+  flex: 1 0 auto;
 }
 
 .imageInput {
-    position:absolute;
-    height:12rem;
-    width:12rem;
-    left:25%;
-    z-index:-1;
+  position: absolute;
+  height: 12rem;
+  width: 12rem;
+  left: 25%;
+  z-index: -1;
 }
 
 .accountSettingsMessageLabel {
-    font-size:1rem;
-    align-self: center;
-    color: crimson;
-    @media only screen and (max-width: 576px){
-        font-size:0.8rem;
-    }
+  font-size: 1rem;
+  align-self: center;
+  color: crimson;
+  @media only screen and (max-width: 576px) {
+    font-size: 0.8rem;
+  }
 }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-
 import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
@@ -14,29 +13,38 @@ import { deletePost } from '../api/posts';
 import { Post } from '../models';
 import { useAppSelector } from '../store';
 
-type Props = { 
-    title: string,
-    content: string,
-    postUserId: string,
-    postId: string,
-    setPosts: React.Dispatch<React.SetStateAction<Post[]>>,
-    getPosts: () => Promise<Post[]>
-    imageName: string,
-}
+type Props = {
+    title: string;
+    content: string;
+    postUserId: string;
+    postId: string;
+    setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
+    getPosts: () => Promise<Post[]>;
+    imageName: string;
+};
 
-function PostCard({ title, content, postUserId, postId, setPosts, getPosts, imageName }: Props) {
-    const { userId } = useAppSelector(state => state.auth.userData);
+function PostCard({
+    title,
+    content,
+    postUserId,
+    postId,
+    setPosts,
+    getPosts,
+    imageName,
+}: Props) {
+    const { userId } = useAppSelector((state) => state.auth.userData);
 
     const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
-    const switchShowDeleteMessage = () => setShowDeleteMessage(!showDeleteMessage);
+    const switchShowDeleteMessage = () =>
+        setShowDeleteMessage(!showDeleteMessage);
 
     const onDeleteClick = async () => {
         await deletePost(postId);
         if (imageName) {
             await deleteImage(imageName);
         }
-        if(userId){
+        if (userId) {
             const posts = await getPosts();
             setPosts(posts);
         }
@@ -55,27 +63,36 @@ function PostCard({ title, content, postUserId, postId, setPosts, getPosts, imag
             }
             {
                 imageName && (
-                    <img className={ styles.postImage } src={ `/api/images/${imageName}` } alt="Loading ..." />
+                    <img
+                        className={ styles.postImage }
+                        src={ `/api/images/${imageName}` }
+                        alt="Loading ..."
+                    />
                 )
             }
-            
+
             <div className={ styles.postBody }>
                 <div className={ styles.postCardHeader }>
                     {title}
                     {
                         userId === postUserId && (
                             <div className={ classNames('toolbar', styles.toolBar) }>
-                                <FontAwesomeIcon className={ styles.faTimes } icon={ faTimes } onClick={ switchShowDeleteMessage } />
+                                <FontAwesomeIcon
+                                    className={ styles.faTimes }
+                                    icon={ faTimes }
+                                    onClick={ switchShowDeleteMessage }
+                                />
                                 <Link className={ styles.editLink } to={ `/edit/${postId}` }>
-                                    <FontAwesomeIcon className={ styles.faPencil } icon={ faPencilAlt } />
+                                    <FontAwesomeIcon
+                                        className={ styles.faPencil }
+                                        icon={ faPencilAlt }
+                                    />
                                 </Link>
                             </div>
                         )
                     }
                 </div>
-                <div className={ styles.content }>
-                    {ReactHtmlParser(content)}
-                </div>
+                <div className={ styles.content }>{ReactHtmlParser(content)}</div>
             </div>
             <div className={ styles.buttonGroup }>
                 <Link className={ styles.button } to={ `/${userId}/posts/${postId}` }>

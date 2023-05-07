@@ -31,7 +31,7 @@ function LogIn({ onLogInLabelClick }: Props) {
             const { data } = await axios.post('/api/users/login', credentials);
             dispatch(setUserData(data));
             navigate('/');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (e: any) {
             setError(e.response.data.message);
         }
@@ -72,7 +72,9 @@ function LogIn({ onLogInLabelClick }: Props) {
                     <FontAwesomeIcon icon={ faArrowRight } size="sm" />
                 </label>
                 {error && <label className={ styles.logInMessageLabel }>{error}</label>}
-                <button className={ styles.logInButton } type="submit">Log In</button>
+                <button className={ styles.logInButton } type="submit">
+                    Log In
+                </button>
             </form>
         </div>
     );

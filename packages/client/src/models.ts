@@ -9,5 +9,5 @@ export type User = {
     firstName: string;
     lastName: string;
     email: string;
-    photo: string
+    photo: string;
 };

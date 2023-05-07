@@ -29,6 +29,7 @@ function AccountSettings() {
                 await updateUser(userId, { firstName });
                 dispatch(setUserData({ ...userData, firstName }));
                 setMessage('');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (e: any) {
                 setMessage('First Name is not Updated in Database');
                 setFirstName(userData.firstName);
@@ -47,6 +48,7 @@ function AccountSettings() {
                 await updateUser(userId, { lastName });
                 dispatch(setUserData({ ...userData, lastName }));
                 setMessage('');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (e: any) {
                 setMessage('Last Name is not Updated in Database');
                 setFirstName(userData.lastName);
@@ -65,6 +67,7 @@ function AccountSettings() {
                 await updateUser(userId, { email });
                 dispatch(setUserData({ ...userData, email }));
                 setMessage('');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (e: any) {
                 setMessage('Email is not Updated in Database');
                 setFirstName(userData.email);
@@ -86,6 +89,7 @@ function AccountSettings() {
                 dispatch(setUserData({ ...userData, photo: newFileName }));
                 setFileUrlName(`/api/photos/${newFileName}`);
                 setMessage('');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (e: any) {
                 setMessage(e.response.data.message);
             }
