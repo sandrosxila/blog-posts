@@ -1,0 +1,29 @@
+@use "src/styles/layouts";
+
+.addPostLayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  padding: 0 1.5rem;
+  min-height: calc(100vh - 4rem);
+}
+
+.postCard {
+  @extend %card;
+  width: 100%;
+  height: auto;
+  min-height: calc(100vh - 7rem);
+  margin: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 3rem;
+  box-sizing: border-box;
+}
+
+.postImage {
+  height: 15rem;
+  width: 100%;
+  object-fit: cover;
+}

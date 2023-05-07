@@ -1,0 +1,123 @@
+@use "src/styles/inputs";
+@use "src/styles/layouts";
+
+.addPostLayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  padding: 0 1.5rem;
+  min-height: calc(100vh - 4rem);
+}
+
+.postCard {
+  @extend %card;
+  width: 100%;
+  height: auto;
+  min-height: calc(100vh - 7rem);
+  margin: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 3rem;
+  box-sizing: border-box;
+}
+
+.postForm {
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.postTitle {
+  @extend %textInput;
+  --box-shadow-color: #6910a818;
+  width: 98.8%;
+  height: 2.5rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  align-self: center;
+}
+
+.postButton {
+  background: #6910a8;
+  color: white;
+  border: 1px solid transparent;
+  height: 2.5rem;
+  width: 5rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 0.5rem 0 0 0;
+
+  &:hover {
+    border: 1px solid #6910a8;
+    background: #500c81;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 5px 1px #6910a8a0;
+  }
+}
+
+.postFileUpload {
+  width: 100%;
+  position: relative;
+  height: 2.5rem;
+}
+
+.postFileInput {
+  width: 100%;
+  opacity: 0;
+}
+
+.postFileLabel {
+  --box-shadow-color: #6910a818;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 100%;
+  border: 1px solid #0000081d;
+  border-radius: 0.8rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1rem;
+  line-height: 1rem;
+
+  &:active {
+    box-shadow: inset 0 0 2px 1px var(--box-shadow-color, #0000081d);
+  }
+
+  &:after {
+    content: "Upload";
+    height: 100%;
+    width: 10%;
+    min-width: 6rem;
+    border-radius: 0 0.8rem 0.8rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1rem;
+    background: #6910a8;
+    color: white;
+  }
+
+  &:active:after {
+    box-shadow: 0 0 5px 1px var(--box-shadow-color, #0000081d);
+  }
+}
+
+.alertLabel {
+  color: crimson;
+  font-size: 0.9rem;
+  align-self: flex-start;
+}
+
+.editor {
+  width: 100%;
+}
