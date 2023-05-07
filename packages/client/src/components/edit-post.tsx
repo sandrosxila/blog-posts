@@ -7,8 +7,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import styles from './edit-post.module.scss';
 import { getPost, updatePost } from '../api/posts';
-import { Post } from '../models';
-import { useAppSelector } from '../store';
 
 function EditPost() {
     const [content, setContent] = useState('');
@@ -20,8 +18,6 @@ function EditPost() {
 
     const { postId: urlPostId } = useParams();
 
-    const userData = useAppSelector((state) => state.auth.userData);
-    const [postData, setPostData] = useState<Post>();
     const navigate = useNavigate();
     const [postTitle, setPostTitle] = useState('');
 
@@ -36,7 +32,6 @@ function EditPost() {
         queryKey: ['edit_post'],
         queryFn: () => getPost(urlPostId as string),
         onSuccess: (data) => {
-            setPostData(data);
             const { image, content, title } = data;
             setPostTitle(title);
             setContent(content);
@@ -58,8 +53,6 @@ function EditPost() {
         }
         formData.append('title', postTitle);
         formData.append('content', content);
-        if (userData.userId) formData.append('userId', userData.userId);
-        if (postData?.image) formData.append('prevImage', postData.image);
 
         if (fileOriginalUrlName !== fileUrlName && fileOriginalUrlName !== '') {
             try {
@@ -135,11 +128,13 @@ function EditPost() {
                             </>
                         )
                     }
-                    <JoditEditor
-                        config={ editorConfig }
-                        value={ content }
-                        onBlur={ (newContent) => setContent(newContent) }
-                    />
+                    <div className={ styles.editor }>
+                        <JoditEditor
+                            config={ editorConfig }
+                            value={ content }
+                            onBlur={ (newContent) => setContent(newContent) }
+                        />
+                    </div>
                     {
                         alertMessage && (
                             <label className={ styles.alertLabel }>{alertMessage}</label>

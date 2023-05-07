@@ -5,6 +5,7 @@ import JoditEditor from 'jodit-react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import styles from './add-post.module.scss';
 import Button from './styled-component/Button';
 import Card from './styled-component/Card';
 import TextInput from './styled-component/TextInput';
@@ -181,36 +182,39 @@ function AddPost() {
 
     
     return (
-        <AddPostLayout>
-            <PostCard>
-                <PostForm onSubmit={ onSubmit } encType="multipart/form-data">
+        <div className={ styles.addPostLayout }>
+            <div className={ styles.postCard }>
+                <form className={ styles.postForm } onSubmit={ onSubmit } encType="multipart/form-data">
                     <h1>
                         Add Post
                     </h1>
                     <label htmlFor="title">
                         Title:
                     </label>
-                    <PostTitle placeholder="Enter Title of New Blog" id="title" ref={ titleRef } />
-                    <PostFileUpload>
-                        <PostFileInput type="file" id="file" onChange={ onFileInputChange } />
-                        <PostFileLabel htmlFor="file">
+                    <input className={ styles.postTitle } placeholder="Enter Title of New Blog" id="title" ref={ titleRef } />
+                    <div className={ styles.postFileUpload }>
+                        <input className={ styles.postFileInput } type="file" id="file" onChange={ onFileInputChange } />
+                        <label className={ styles.postFileLabel } htmlFor="file">
                             {fileName}
-                        </PostFileLabel>
-                    </PostFileUpload>
-                    <JoditEditor
-                        config={ editorConfig }
-                        value={ content }
-                        onBlur={ newContent => setContent(newContent) }
-                    />
+                        </label>
+                    </div>
+                    <div className={ styles.editor }>
+                        <JoditEditor
+                            config={ editorConfig }
+                            value={ content }
+                            onBlur={ newContent => setContent(newContent) }
+                        />
+                    </div>
+                    
                     {
-                        alertMessage && <AlertLabel>{alertMessage}</AlertLabel>
+                        alertMessage && <label className={ styles.alertLabel }>{alertMessage}</label>
                     }
-                    <PostButton type="submit">
+                    <button className={ styles.postButton } type="submit">
                         Post
-                    </PostButton>
-                </PostForm>
-            </PostCard>
-        </AddPostLayout>
+                    </button>
+                </form>
+            </div>
+        </div>
     );
 }
 

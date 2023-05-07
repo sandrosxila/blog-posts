@@ -49,12 +49,7 @@ export class PostsService {
     });
   }
 
-  async update(
-    id: number,
-    title: string,
-    content: string,
-    image: string | null,
-  ) {
+  async update(id: number, title: string, content: string, image?: string) {
     return await this.post.save({
       postId: id,
       title,

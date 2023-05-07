@@ -1,6 +1,6 @@
-@use 'src/styles/buttons';
-@use 'src/styles/inputs';
-@use 'src/styles/layouts';
+@use "src/styles/buttons";
+@use "src/styles/inputs";
+@use "src/styles/layouts";
 
 .editPostLayout {
   display: flex;
@@ -122,4 +122,8 @@
 
 .editPostImage {
   max-height: 35rem;
+}
+
+.editor {
+  width: 100%;
 }

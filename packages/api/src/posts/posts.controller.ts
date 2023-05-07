@@ -39,7 +39,10 @@ export class PostsController {
     @UploadedFile(
       'file',
       new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })],
+        validators: [
+          new FileTypeValidator({ fileType: /(jpg|jpeg|png|webp)$/ }),
+        ],
+        fileIsRequired: false,
       }),
     )
     file: Express.Multer.File,
@@ -90,7 +93,10 @@ export class PostsController {
     )
     file: Express.Multer.File,
   ) {
+    const shouldReplacePhoto = !!file?.filename;
+
     const post = await this.postsService.findOne(Number(id));
+
     if (!post) {
       throw new HttpException(
         `Couldn't find a post with id ${id}`,
@@ -104,11 +110,13 @@ export class PostsController {
       Number(id),
       title,
       content,
-      file?.filename ?? null,
+      file?.filename,
     );
 
     try {
-      await this.imagesService.remove(image);
+      if (shouldReplacePhoto) {
+        await this.imagesService.remove(image);
+      }
     } catch (e) {
       console.log(e.message);
     }
