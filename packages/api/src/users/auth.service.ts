@@ -3,12 +3,16 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { LogInUserDto } from './dto/log-in-user.dto';
 import { scrypt as _scrypt, randomBytes } from 'crypto';
 import { promisify } from 'util';
+import { JwtService } from '@nestjs/jwt';
 
 const scrypt = promisify(_scrypt);
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async logIn({ email, password }: LogInUserDto) {
     const [user] = await this.usersService.find(email);
@@ -25,7 +29,20 @@ export class AuthService {
       throw new HttpException("Password doesn't match", HttpStatus.FORBIDDEN);
     }
 
-    return user;
+    const payload = {
+      sub: user.userId,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      photo: user.photo,
+    };
+
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+      refresh_token: await this.jwtService.signAsync(payload, {
+        expiresIn: '1d',
+      }),
+    };
   }
 
   async signUp(
@@ -54,5 +71,20 @@ export class AuthService {
       generatedPassword,
       photo,
     );
+  }
+
+  async refresh(payload: {
+    sub: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    photo: string;
+  }) {
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+      refresh_token: await this.jwtService.signAsync(payload, {
+        expiresIn: '1d',
+      }),
+    };
   }
 }

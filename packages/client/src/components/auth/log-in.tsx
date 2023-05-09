@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './log-in.module.scss';
@@ -11,7 +12,7 @@ import { useAppDispatch } from '../../store';
 import FloatingLabelTextInputDiv from '../styled-component/complex/FloatingLabelTextInputDiv';
 
 type Props = {
-    onLogInLabelClick?: React.MouseEventHandler<HTMLLabelElement>;
+  onLogInLabelClick?: React.MouseEventHandler<HTMLLabelElement>;
 };
 
 function LogIn({ onLogInLabelClick }: Props) {
@@ -29,7 +30,24 @@ function LogIn({ onLogInLabelClick }: Props) {
         e.preventDefault();
         try {
             const { data } = await axios.post('/api/users/login', credentials);
-            dispatch(setUserData(data));
+
+            const { sub, ...userData } = jwtDecode<{
+                sub: string;
+                firstName: string;
+                lastName: string;
+                email: string;
+                photo: string;
+            }>(data['access_token']);
+
+            localStorage.setItem('token', data['access_token']);
+            localStorage.setItem('refresh_token', data['refresh_token']);
+
+            dispatch(
+                setUserData({
+                    userId: sub,
+                    ...userData
+                })
+            );
             navigate('/');
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (e: any) {
