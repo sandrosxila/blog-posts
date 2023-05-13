@@ -3,14 +3,13 @@ import React from 'react';
 import classNames from 'classnames';
 
 import styles from './floating-label-text-input.module.scss';
-import TextInput from '../TextInput';
 
 type Props = {
     className?: string;
     id?: string;
-} & React.ComponentProps<typeof TextInput>;
+} & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
-function FloatingLabelTextInputDiv({
+function FloatingLabelTextInput({
     className: wrapperClassName,
     id: inputDivId,
     ...filteredProps
@@ -28,4 +27,4 @@ function FloatingLabelTextInputDiv({
     );
 }
 
-export default FloatingLabelTextInputDiv;
+export default FloatingLabelTextInput;

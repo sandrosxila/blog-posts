@@ -22,9 +22,9 @@ import { UploadedFileFilter } from '../filters/uploaded-file.filter';
 import { FileUploader } from '../interceptors/file-uploader.interceptor';
 import { UsersService } from '../users/users.service';
 import { ImagesService } from '../images/images.service';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('posts')
 export class PostsController {
   constructor(

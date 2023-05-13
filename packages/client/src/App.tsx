@@ -7,7 +7,7 @@ import AboutUs from './components/about-us';
 import AccountSettings from './components/account-settings';
 import AddPost from './components/add-post';
 import EditPost from './components/edit-post';
-import Navbar from './components/layout/Navbar';
+import Navbar from './components/layout/navbar';
 import NotFound from './components/not-found';
 import Post from './components/post';
 import PostBoard from './components/post-board';

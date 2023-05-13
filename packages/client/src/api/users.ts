@@ -7,6 +7,8 @@ export const userSignUp = (formData: FormData) =>
     axios
         .post<{
         userData: UserData;
+        access_token: string;
+        refresh_token: string;
         message: string;
     }>('/api/users/signup', formData, {
         headers: {

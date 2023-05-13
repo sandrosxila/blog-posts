@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './log-in.module.scss';
 import { setUserData } from '../../slices/authSlice';
 import { useAppDispatch } from '../../store';
-import FloatingLabelTextInputDiv from '../styled-component/complex/FloatingLabelTextInputDiv';
+import FloatingLabelTextInput from '../ui/floating-label-text-input';
 
 type Props = {
   onLogInLabelClick?: React.MouseEventHandler<HTMLLabelElement>;
@@ -69,7 +69,7 @@ function LogIn({ onLogInLabelClick }: Props) {
         <div className={ styles.logInLayout }>
             <h1 className={ styles.logInHeader }>Log In</h1>
             <form className={ styles.logInForm } onSubmit={ onSubmit }>
-                <FloatingLabelTextInputDiv
+                <FloatingLabelTextInput
                     className={ styles.logInFormInput }
                     type="email"
                     name="email"
@@ -77,7 +77,7 @@ function LogIn({ onLogInLabelClick }: Props) {
                     value={ email }
                     onChange={ onChange }
                 />
-                <FloatingLabelTextInputDiv
+                <FloatingLabelTextInput
                     className={ styles.logInFormInput }
                     type="password"
                     name="password"

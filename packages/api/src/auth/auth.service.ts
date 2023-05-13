@@ -1,9 +1,10 @@
-import { UsersService } from './users.service';
+import { UsersService } from '../users/users.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { LogInUserDto } from './dto/log-in-user.dto';
 import { scrypt as _scrypt, randomBytes } from 'crypto';
 import { promisify } from 'util';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '../users/entities/user.entity';
+import { JwtPayload } from './jwt-payload';
 
 const scrypt = promisify(_scrypt);
 
@@ -14,21 +15,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async logIn({ email, password }: LogInUserDto) {
-    const [user] = await this.usersService.find(email);
-
-    if (!user) {
-      throw new HttpException('Email not found', HttpStatus.NOT_FOUND);
-    }
-
-    const [salt, storedHash] = user.password.split('.');
-
-    const hash = (await scrypt(password, salt, 32)) as Buffer;
-
-    if (storedHash !== hash.toString('hex')) {
-      throw new HttpException("Password doesn't match", HttpStatus.FORBIDDEN);
-    }
-
+  async logIn(user: User) {
     const payload = {
       sub: user.userId,
       firstName: user.firstName,
@@ -73,18 +60,37 @@ export class AuthService {
     );
   }
 
-  async refresh(payload: {
-    sub: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    photo: string;
-  }) {
+  async refresh(payload: JwtPayload) {
     return {
       access_token: await this.jwtService.signAsync(payload),
       refresh_token: await this.jwtService.signAsync(payload, {
         expiresIn: '1d',
       }),
+    };
+  }
+
+  async validateUser(email: string, password: string) {
+    const [user] = await this.usersService.find(email);
+
+    if (!user) {
+      throw new HttpException('Email not found', HttpStatus.NOT_FOUND);
+    }
+
+    const [salt, storedHash] = user.password.split('.');
+
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+
+    if (storedHash !== hash.toString('hex')) {
+      throw new HttpException("Password doesn't match", HttpStatus.FORBIDDEN);
+    }
+
+    return user;
+  }
+
+  async login(user: { email: string; userId: number }) {
+    const payload = { username: user.email, sub: user.userId };
+    return {
+      access_token: this.jwtService.sign(payload),
     };
   }
 }
