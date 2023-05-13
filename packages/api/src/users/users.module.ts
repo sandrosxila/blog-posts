@@ -3,11 +3,11 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { AuthService } from './auth.service';
 import { UploadedFileFilter } from '../filters/uploaded-file.filter';
 import { Post } from '../posts/entities/post.entity';
 import { PostsService } from '../posts/posts.service';
 import { PhotosService } from '../photos/photos.service';
+import { AuthService } from '../auth/auth.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Post])],
@@ -19,5 +19,6 @@ import { PhotosService } from '../photos/photos.service';
     PostsService,
     PhotosService,
   ],
+  exports: [UsersService],
 })
 export class UsersModule {}

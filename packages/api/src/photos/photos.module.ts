@@ -5,5 +5,6 @@ import { PhotosController } from './photos.controller';
 @Module({
   controllers: [PhotosController],
   providers: [PhotosService],
+  exports: [PhotosService],
 })
 export class PhotosModule {}

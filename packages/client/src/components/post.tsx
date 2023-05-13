@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
+import { useQuery } from '@tanstack/react-query';
 import ReactHtmlParser from 'react-html-parser';
 import { useParams } from 'react-router-dom';
 
@@ -9,21 +10,15 @@ import { getPost } from '../api/posts';
 function Post() {
     const { postId: urlPostId } = useParams();
 
-    const [postData, setPostData] = useState<{
-        title: string;
-        image: string | null;
-        content: string;
-    }>({
-        title: '',
-        image: null,
-        content: '',
+    const {
+        data: postData = {
+            title: '',
+            image: null,
+            content: '',
+        },
+    } = useQuery({
+        queryFn: () => getPost(urlPostId!),
     });
-
-    useEffect(() => {
-        if (urlPostId) {
-            getPost(urlPostId).then((data) => setPostData(data));
-        }
-    }, [urlPostId]);
 
     const { title, image, content } = postData;
 

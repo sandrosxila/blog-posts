@@ -9,7 +9,7 @@ import styles from './sign-up.module.scss';
 import { userSignUp } from '../../api/users';
 import { setUserData } from '../../slices/authSlice';
 import { useAppDispatch } from '../../store';
-import FloatingLabelTextInputDiv from '../styled-component/complex/FloatingLabelTextInputDiv';
+import FloatingLabelTextInput from '../ui/floating-label-text-input';
 
 type Props = {
     onSignUpLabelClick?: React.MouseEventHandler<HTMLLabelElement>;
@@ -56,11 +56,12 @@ function SignUp({ onSignUpLabelClick }: Props) {
                 formData.append('file', file);
             }
         }
-        console.log(formData);
         if (validateData()) {
             try {
-                const { userData } = await userSignUp(formData);
+                const { userData, ...jwtPayload } = await userSignUp(formData);
                 dispatch(setUserData(userData));
+                localStorage.setItem('access_token', jwtPayload.access_token);
+                localStorage.setItem('refresh_token', jwtPayload.refresh_token);
                 navigate('/');
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (e: any) {
@@ -118,7 +119,7 @@ function SignUp({ onSignUpLabelClick }: Props) {
                 onSubmit={ onSubmit }
                 encType="multipart/form-data"
             >
-                <FloatingLabelTextInputDiv
+                <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="text"
                     name="firstName"
@@ -126,7 +127,7 @@ function SignUp({ onSignUpLabelClick }: Props) {
                     value={ firstName }
                     onChange={ onChange }
                 />
-                <FloatingLabelTextInputDiv
+                <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="text"
                     name="lastName"
@@ -134,7 +135,7 @@ function SignUp({ onSignUpLabelClick }: Props) {
                     value={ lastName }
                     onChange={ onChange }
                 />
-                <FloatingLabelTextInputDiv
+                <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="email"
                     name="email"
@@ -142,7 +143,7 @@ function SignUp({ onSignUpLabelClick }: Props) {
                     value={ email }
                     onChange={ onChange }
                 />
-                <FloatingLabelTextInputDiv
+                <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="password"
                     name="password"
@@ -155,7 +156,7 @@ function SignUp({ onSignUpLabelClick }: Props) {
                     password={ password }
                     onChangeScore={ onChangeScore }
                 />
-                <FloatingLabelTextInputDiv
+                <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="password"
                     name="repeatedPassword"

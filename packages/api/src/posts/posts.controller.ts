@@ -12,6 +12,7 @@ import {
   Put,
   ParseFilePipe,
   FileTypeValidator,
+  UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -21,7 +22,9 @@ import { UploadedFileFilter } from '../filters/uploaded-file.filter';
 import { FileUploader } from '../interceptors/file-uploader.interceptor';
 import { UsersService } from '../users/users.service';
 import { ImagesService } from '../images/images.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('posts')
 export class PostsController {
   constructor(

@@ -8,6 +8,7 @@ import { dbConfig } from 'api-data-source';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MulterModule } from '@nestjs/platform-express';
     PhotosModule,
     UsersModule,
     PostsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

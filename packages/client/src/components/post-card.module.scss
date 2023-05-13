@@ -13,11 +13,11 @@
 .postImage {
   object-fit: cover;
   width: 100%;
-  height: 50%;
+  max-height: 32rem;
 }
 
 .postBody {
-  margin: 0 1.5rem;
+  margin: 1.5rem 1.5rem 0 1.5rem;
   width: 90%;
 }
 
