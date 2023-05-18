@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useForm } from 'react-hook-form';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,48 +16,82 @@ type Props = {
     onSignUpLabelClick?: React.MouseEventHandler<HTMLLabelElement>;
 };
 
+type SignUpForm = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    repeatedPassword: string;
+    file: FileList | null;
+};
+
 function SignUp({ onSignUpLabelClick }: Props) {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const [acceptPassword, setAcceptPassword] = useState(true);
-    const [credentials, setCredentials] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        repeatedPassword: '',
+
+    const {
+        resetField,
+        register,
+        handleSubmit,
+        formState: { errors },
+        getValues,
+    } = useForm<SignUpForm>({
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            repeatedPassword: '',
+            file: null,
+        },
     });
 
-    const [arePasswordsEqual, setArePasswordsEqual] = useState(true);
+    const { ref, onChange: onFileChange, ...fileRegister } = register('file');
+    const { onChange: onPasswordChange, ...passwordRegister } = register('password', {
+        required: true,
+        minLength: {
+            value: 8,
+            message: 'Password should contain at least 8 characters',
+        },
+    });
+    const [password, setPassword] = useState('');
+    const [acceptPassword, setAcceptPassword] = useState(true);
 
-    const [file, setFile] = useState<File | null>(null);
     const [fileName, setFileName] = useState('Upload Photo...');
-    const [fileUrlName, setFileUrlName] = useState('');
-    const [newImageUploaded, setNewImageUploaded] = useState(false);
 
     const [error, setError] = useState<string | null>(null);
 
-    const inputRef = useRef<HTMLInputElement | null>(null);
+    const fileRef = useRef<HTMLInputElement | null>(null);
+    const fileInputRef = (e: HTMLInputElement | null) => {
+        ref(e);
+        fileRef.current = e;
+    };
 
-    const { firstName, lastName, email, password, repeatedPassword } =
-    credentials;
+    const onPasswordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+        onPasswordChange(e);
+    };
 
-    const validateData = () => repeatedPassword === password && acceptPassword;
+    const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) {
+            setFileName(e.target.files[0].name);
+        }
+        onFileChange(e);
+    };
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const onSubmit = async (data: SignUpForm) => {
+        const { firstName, lastName, email, password, file } = data;
+        const photo = file?.[0] ?? null;
+
         const formData = new FormData();
         formData.append('firstName', firstName);
         formData.append('lastName', lastName);
         formData.append('email', email);
         formData.append('password', password);
-
-        if (newImageUploaded) {
-            if (file) {
-                formData.append('file', file);
-            }
+        if (photo) {
+            formData.append('file', photo);
         }
-        if (validateData()) {
+        if (acceptPassword) {
             try {
                 const { userData, ...jwtPayload } = await userSignUp(formData);
                 dispatch(setUserData(userData));
@@ -72,38 +107,10 @@ function SignUp({ onSignUpLabelClick }: Props) {
         }
     };
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCredentials((prevState) => {
-            const newState = {
-                ...prevState,
-                [e.target.name]: e.target.value,
-            };
-            const { password, repeatedPassword } = newState;
-            setArePasswordsEqual(
-                password === repeatedPassword || repeatedPassword === ''
-            );
-            return newState;
-        });
-    };
-
-    const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            const [newFile] = Array.from(e.target.files);
-            setNewImageUploaded(true);
-            setFile(newFile);
-            setFileName(newFile.name);
-            setFileUrlName(URL.createObjectURL(newFile));
-        }
-    };
-
     const onImageDeleteClick = () => {
-        setNewImageUploaded(false);
-        setFile(null);
         setFileName('Upload Photo...');
-        URL.revokeObjectURL(fileUrlName);
-        setFileUrlName('');
-        if(inputRef.current)
-            inputRef.current.value = '';
+        if (fileRef.current) fileRef.current.value = '';
+        resetField('file');
     };
 
     const onChangeScore = (score: number) => {
@@ -114,42 +121,37 @@ function SignUp({ onSignUpLabelClick }: Props) {
     return (
         <div className={ styles.signUpLayout }>
             <h1>Sign Up</h1>
-            <form
-                className={ styles.signUpForm }
-                onSubmit={ onSubmit }
-                encType="multipart/form-data"
-            >
+            <form className={ styles.signUpForm } onSubmit={ handleSubmit(onSubmit) }>
                 <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="text"
-                    name="firstName"
                     placeholder="First Name"
-                    value={ firstName }
-                    onChange={ onChange }
+                    { ...register('firstName', { required: true }) }
                 />
                 <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="text"
-                    name="lastName"
                     placeholder="Last Name"
-                    value={ lastName }
-                    onChange={ onChange }
+                    { ...register('lastName', { required: true }) }
                 />
                 <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="email"
-                    name="email"
                     placeholder="E-mail"
-                    value={ email }
-                    onChange={ onChange }
+                    { ...register('email', {
+                        required: true,
+                        pattern: {
+                            value: /^\S+@\S+$/i,
+                            message: 'please enter an email address',
+                        },
+                    }) }
                 />
                 <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="password"
-                    name="password"
                     placeholder="Password"
-                    value={ password }
-                    onChange={ onChange }
+                    { ...passwordRegister }
+                    onChange={ onPasswordInputChange }
                 />
                 <PasswordStrengthBar
                     className={ styles.signUpPasswordStrengthBar }
@@ -159,27 +161,33 @@ function SignUp({ onSignUpLabelClick }: Props) {
                 <FloatingLabelTextInput
                     className={ styles.signUpFormInput }
                     type="password"
-                    name="repeatedPassword"
                     placeholder="Repeat Password"
-                    value={ repeatedPassword }
-                    onChange={ onChange }
+                    { ...register('repeatedPassword', {
+                        required: true,
+                        validate: (value) => {
+                            const password = getValues('password');
+                            return password === value || 'Passwords Don\'t Match';
+                        },
+                    }) }
                 />
                 <label className={ styles.signUpMessageSmallLabel }>
-                    {!arePasswordsEqual && 'Passwords Don\'t Match'}
+                    {errors.repeatedPassword && errors.repeatedPassword.message}
                 </label>
                 <div className={ styles.signUpFileUpload }>
                     <input
                         className={ styles.signUpFileInput }
                         type="file"
                         id="file"
+                        multiple={ false }
+                        { ...fileRegister }
                         onChange={ onFileInputChange }
-                        ref={ inputRef }
+                        ref={ fileInputRef }
                     />
                     <label className={ styles.signUpFileLabel } htmlFor="file">
                         {fileName.length > 15 ? `${fileName.slice(0, 15)}...` : fileName}
                     </label>
                     {
-                        fileUrlName && (
+                        fileRef.current && !!fileRef.current.files?.length && (
                             <label
                                 className={ styles.signUpFileCancelLabel }
                                 onClick={ onImageDeleteClick }

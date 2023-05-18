@@ -30,8 +30,6 @@ axios.interceptors.response.use(
             _retry: boolean;
         };
 
-        console.log(originalConfig);
-
         if (
             error.response?.status === 401 &&
             refreshToken &&
@@ -54,15 +52,15 @@ axios.interceptors.response.use(
 
                 return axios(originalConfig);
             } catch {
-                return error;
+                throw error;
             }
         }
-        return error;
+        throw error;
     }
 );
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 
 root.render(

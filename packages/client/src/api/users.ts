@@ -17,6 +17,11 @@ export const userSignUp = (formData: FormData) =>
     })
         .then(({ data }) => data);
 
+export const userLogIn = (credentials: { email: string, password: string }) => axios.post<{
+    access_token: string,
+    refresh_token: string
+}>('/api/users/login', credentials).then(({ data }) => data);
+
 export const updateUser = (
     userId: string,
     user: Partial<Omit<User, 'photo'>>
@@ -25,10 +30,10 @@ export const updateUser = (
 export const updateUserPhoto = (userId: string, formData: FormData) =>
     axios
         .put<{ photo: string }>(`/api/users/${userId}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
         .then(({ data }) => data);
 
 export const getUserPosts = (userId: string) =>
