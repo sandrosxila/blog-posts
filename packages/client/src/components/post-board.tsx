@@ -34,21 +34,21 @@ function PostBoard() {
             <div className={ styles.contentBoard }>
                 {
                     userId &&
-          posts.map((post) => {
-              const { title, image, content, postId } = post;
-              return (
-                  <PostCard
-                      key={ postId }
-                      title={ title }
-                      imageName={ image }
-                      content={ content }
-                      postUserId={ userId }
-                      postId={ postId }
-                      setPosts={ setPosts }
-                      getPosts={ getAllPosts }
-                  />
-              );
-          })
+                    posts.map((post) => {
+                        const { title, image, content, postId } = post;
+                        return (
+                            <PostCard
+                                key={ postId }
+                                title={ title }
+                                imageName={ image }
+                                content={ content }
+                                postUserId={ userId }
+                                postId={ postId }
+                                setPosts={ setPosts }
+                                getPosts={ getAllPosts }
+                            />
+                        );
+                    })
                 }
             </div>
         </div>

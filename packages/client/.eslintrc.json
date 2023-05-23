@@ -76,6 +76,7 @@
         "after": true
       }
     ],
+    "@typescript-eslint/indent": ["warn", 4],
     "@typescript-eslint/type-annotation-spacing": [
       "warn",
       {

@@ -9,11 +9,11 @@ type Props = {
     id?: string;
 } & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
-function FloatingLabelTextInput({
+const FloatingLabelTextInput = React.forwardRef<HTMLInputElement, Props>(({
     className: wrapperClassName,
     id: inputDivId,
     ...filteredProps
-}: Props) {
+}, ref) => {
     const textInputId = React.useId();
 
     return (
@@ -21,10 +21,10 @@ function FloatingLabelTextInput({
             id={ inputDivId }
             className={ classNames(styles.inputWrapper, wrapperClassName) }
         >
-            <input { ...filteredProps } id={ `${textInputId}` } />
+            <input { ...filteredProps } id={ `${textInputId}` } ref={ ref }/>
             <label htmlFor={ `${textInputId}` }>{filteredProps.placeholder}</label>
         </div>
     );
-}
+});
 
 export default FloatingLabelTextInput;

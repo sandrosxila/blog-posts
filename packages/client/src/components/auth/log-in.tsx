@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './log-in.module.scss';
+import { userLogIn } from '../../api/users';
 import { setUserData } from '../../slices/authSlice';
 import { useAppDispatch } from '../../store';
 import FloatingLabelTextInput from '../ui/floating-label-text-input';
@@ -19,17 +20,22 @@ function LogIn({ onLogInLabelClick }: Props) {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const [credentials, setCredentials] = useState({
-        email: '',
-        password: '',
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            email: '',
+            password: '',
+        },
     });
 
     const [error, setError] = useState('');
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const onSubmit = async (credentials: { email: string; password: string }) => {
         try {
-            const { data } = await axios.post('/api/users/login', credentials);
+            const data = await userLogIn(credentials);
 
             const { sub, ...userData } = jwtDecode<{
                 sub: string;
@@ -45,7 +51,7 @@ function LogIn({ onLogInLabelClick }: Props) {
             dispatch(
                 setUserData({
                     userId: sub,
-                    ...userData
+                    ...userData,
                 })
             );
             navigate('/');
@@ -55,41 +61,57 @@ function LogIn({ onLogInLabelClick }: Props) {
         }
     };
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        setCredentials({
-            ...credentials,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    const { email, password } = credentials;
-
     return (
         <div className={ styles.logInLayout }>
             <h1 className={ styles.logInHeader }>Log In</h1>
-            <form className={ styles.logInForm } onSubmit={ onSubmit }>
+            <form className={ styles.logInForm } onSubmit={ handleSubmit(onSubmit) }>
                 <FloatingLabelTextInput
                     className={ styles.logInFormInput }
                     type="email"
-                    name="email"
                     placeholder="E-mail"
-                    value={ email }
-                    onChange={ onChange }
+                    { 
+                        ...register('email', {
+                            required: true,
+                            pattern: {
+                                value: /^\S+@\S+$/i,
+                                message: 'please enter an email address',
+                            },
+                        }) 
+                    }
                 />
+                {
+                    errors.email && (
+                        <label className={ styles.logInMessageLabel }>
+                            {errors.email.message}
+                        </label>
+                    )
+                }
                 <FloatingLabelTextInput
                     className={ styles.logInFormInput }
                     type="password"
-                    name="password"
                     placeholder="Password"
-                    value={ password }
-                    onChange={ onChange }
+                    {
+                        ...register('password', {
+                            required: true,
+                            minLength: {
+                                value: 8,
+                                message: 'Password should contain at least 8 characters',
+                            },
+                        }) 
+                    }
                 />
+                {
+                    errors.password && (
+                        <label className={ styles.logInMessageLabel }>
+                            {errors.password.message}
+                        </label>
+                    )
+                }
+                {error && <label className={ styles.logInMessageLabel }>{ error }</label>}
                 <label className={ styles.logInLabel } onClick={ onLogInLabelClick }>
                     {'Sign Up if you don\'t have an account '}
                     <FontAwesomeIcon icon={ faArrowRight } size="sm" />
-                </label>
-                {error && <label className={ styles.logInMessageLabel }>{error}</label>}
+                </label>              
                 <button className={ styles.logInButton } type="submit">
                     Log In
                 </button>

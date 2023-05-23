@@ -2,13 +2,13 @@
   display: grid;
   grid-template-areas: "left-bar content-board right-bar";
   grid-template-columns: 1fr 2fr 1fr;
-  padding: 0 4rem;
 
   @media only screen and (max-width: 1250px) {
     grid-template-areas:
       "left-bar  content-board"
       "right-bar content-board"
       "......... content-board";
+      grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
 
@@ -16,6 +16,7 @@
     grid-template-areas:
       "left-bar      right-bar"
       "content-board content-board";
+      grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
 }

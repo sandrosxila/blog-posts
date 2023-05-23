@@ -1,3 +1,4 @@
+@use "src/styles/buttons";
 @use "src/styles/inputs";
 @use "src/styles/layouts";
 
@@ -42,6 +43,7 @@
 }
 
 .postButton {
+  @extend %button;
   background: #6910a8;
   color: white;
   border: 1px solid transparent;
