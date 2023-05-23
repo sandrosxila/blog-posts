@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export type UserData = {
     userId: string | null;
@@ -13,44 +13,31 @@ export type AuthState = {
     userData: UserData;
 };
 
+const initialUserData = {
+    userId: null,
+    firstName: null,
+    lastName: null,
+    email: null,
+    photo: null,
+};
+
+const initialState: AuthState = {
+    isLoggedIn: false,
+    userData: initialUserData
+};
+
 export const slice = createSlice({
     name: 'auth',
-    initialState: {
-        isLoggedIn:
-      localStorage.getItem('isLoggedIn') === null
-          ? false
-          : localStorage.getItem('isLoggedIn') === 'true',
-        userData:
-      localStorage.getItem('userData') === null
-          ? {
-              userId: null,
-              firstName: null,
-              lastName: null,
-              email: null,
-              photo: null,
-          }
-          : JSON.parse(localStorage.getItem('userData')!),
-    } as AuthState,
+    initialState,
     reducers: {
-        setUserData: (state, action) => {
-            console.log(action);
+        setUserData: (state, action: PayloadAction<UserData>) => {
             const { userId, firstName, lastName, email, photo } = action.payload;
             state.isLoggedIn = true;
             state.userData = { userId, firstName, lastName, email, photo };
-            localStorage.setItem('isLoggedIn', state.isLoggedIn.toString());
-            localStorage.setItem('userData', JSON.stringify(state.userData));
         },
         logOut: (state) => {
             state.isLoggedIn = false;
-            state.userData = {
-                userId: null,
-                firstName: null,
-                lastName: null,
-                email: null,
-                photo: null,
-            };
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userData');
+            state.userData = initialUserData;
         },
     },
 });
