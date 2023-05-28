@@ -8,6 +8,13 @@ export const getPost = (postId: string) =>
 export const getAllPosts = () =>
     axios.get<Post[]>('/api/posts').then(({ data }) => data);
 
+export const addPost = (formData: FormData) =>
+    axios.post('/api/posts', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+
 export const updatePost = (postId: string, formData: FormData) =>
     axios.put(`/api/posts/${postId}`, formData, {
         headers: {

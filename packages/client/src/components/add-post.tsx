@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 
-import axios from 'axios';
 import JoditEditor from 'jodit-react';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './add-post.module.scss';
+import { addPost } from '../api/posts';
 import { useAppSelector } from '../store';
 
 function AddPost() {
@@ -26,7 +26,7 @@ function AddPost() {
 
     const userData = useAppSelector((state) => state.auth.userData);
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (titleRef.current?.value && userData.userId) {
             const formData = new FormData();
@@ -38,19 +38,14 @@ function AddPost() {
             formData.append('content', content);
             formData.append('userId', userData.userId);
 
-            axios
-                .post('/api/posts', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
-                .then(() => {
-                    setAlertMessage('');
-                    navigate('/');
-                })
-                .catch(() => {
-                    setAlertMessage('Unable To Add Post');
-                });
+            try{
+                await addPost(formData);
+                setAlertMessage('');
+                navigate('/');
+            }
+            catch {
+                setAlertMessage('Unable To Add Post');
+            }
         }
         else {
             setAlertMessage('Please fill all fields');

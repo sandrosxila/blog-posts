@@ -1,4 +1,3 @@
-@use "src/styles/inputs";
 @use "src/styles/layouts";
 
 .accountSettingsLayout {
@@ -31,7 +30,7 @@
   flex-direction: column;
 }
 
-.changeAccountForm {
+.changeAccountFieldGroup {
   width: 21rem;
   display: flex;
   flex-direction: column;
@@ -41,72 +40,23 @@
 }
 
 .profilePhotoArea {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.profilePhoto {
   border-radius: 50%;
   width: 12rem;
   height: 12rem;
-  object-fit: contain;
+  object-fit: cover;
   transition: all ease-in 0.3s;
-  align-self: center;
-  background-size: 12rem;
 
   &:hover {
     filter: brightness(50%);
+    cursor: pointer;
   }
 }
 
-.userData {
-  text-align: center;
-  margin: 0;
-  display: flex;
-  gap: 0.2rem;
-  width: 100%;
-  align-items: center;
-  justify-content: flex-start;
-
-  &:hover > svg {
-    opacity: 1;
-  }
-}
-
-.faPencil {
-  color: #550f86;
-  font-size: 1.7rem;
-  height: 1rem;
-  cursor: pointer;
-  opacity: 0;
-  transition: all 0.2s ease-in;
-}
-
-.faCheck {
-  color: seagreen;
-  font-size: 1.7rem;
-  height: 1.2rem;
-  cursor: pointer;
-  opacity: 0;
-  transition: all 0.2s ease-in;
-}
-
-.changeAccountKey {
-  color: #6910a8;
-  width: 9.68rem;
-}
-
-.changeAccountValue {
-  color: #6910a8;
-  height: 1.5rem;
-  font-size: 1rem;
-  padding: 0.2625rem 0.55rem;
-  margin: 0;
-  flex: 1 0 0;
-}
-
-.changeAccountFormInput {
-  @extend %textInput;
-  --box-shadow-color: #6910a818;
-  height: 1.5rem;
-  width: 8rem;
-  flex: 1 0 auto;
-}
 
 .imageInput {
   position: absolute;
@@ -120,6 +70,7 @@
   font-size: 1rem;
   align-self: center;
   color: crimson;
+  
   @media only screen and (max-width: 576px) {
     font-size: 0.8rem;
   }

@@ -1,0 +1,55 @@
+@use "src/styles/inputs";
+
+.accountSettingsField {
+  text-align: center;
+  margin: 0;
+  display: flex;
+  gap: 0.2rem;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+
+  &:hover > svg {
+    opacity: 1;
+  }
+}
+
+.changeAccountKey {
+  color: #6910a8;
+  width: 9.68rem;
+}
+
+.changeAccountFormInput {
+  @extend %textInput;
+  --box-shadow-color: #6910a818;
+  height: 1.5rem;
+  width: 8rem;
+  flex: 1 0 auto;
+}
+
+.faPencil {
+  color: #550f86;
+  font-size: 1.7rem;
+  height: 1rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease-in;
+}
+
+.faCheck {
+  color: seagreen;
+  font-size: 1.7rem;
+  height: 1.2rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease-in;
+}
+
+.changeAccountValue {
+    color: #6910a8;
+    height: 1.5rem;
+    font-size: 1rem;
+    padding: 0.2625rem 0.55rem;
+    margin: 0;
+    flex: 1 0 0;
+  }
