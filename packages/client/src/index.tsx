@@ -10,6 +10,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.scss';
+import { logOut } from './slices/authSlice';
 import { store, persistor } from './store';
 
 axios.interceptors.request.use(
@@ -53,6 +54,7 @@ axios.interceptors.response.use(
 
                 return axios(originalConfig);
             } catch {
+                store.dispatch(logOut());
                 throw error;
             }
         }

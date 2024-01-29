@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategies/local.strategy';
-import { jwtConstants } from '../users/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -16,7 +15,7 @@ import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
     PassportModule,
     JwtModule.register({
       global: true,
-      secret: jwtConstants.secret,
+      secret: process.env.JWT_AUTH_SECRET,
       signOptions: { expiresIn: '60s' },
     }),
   ],

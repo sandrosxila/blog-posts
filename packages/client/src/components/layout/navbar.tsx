@@ -20,10 +20,10 @@ export default function Navbar() {
     return (
         <nav className={ styles.nav }>
             <div className={ styles.navDiv }>
-                <Link className={ styles.navDivItem } to={ '/' }>Home</Link>
                 {
                     isLoggedIn && (
                         <>
+                            <Link className={ styles.navDivItem } to={ '/' }>Home</Link>
                             <Link className={ styles.navDivItem } to={ '/add' }>Add Post</Link>
                         </>
                     )

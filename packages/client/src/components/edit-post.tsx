@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import JoditEditor from 'jodit-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import styles from './edit-post.module.scss';
+import { deleteImageDb } from '../api/images';
 import { getPost, updatePost } from '../api/posts';
 
 function EditPost() {
@@ -22,21 +22,22 @@ function EditPost() {
     const [postTitle, setPostTitle] = useState('');
 
     const [file, setFile] = useState<File | null>(null);
-    const [fileName, setFileName] = useState('Upload New Image...');
+    const [fileName, setFileName] = useState<string>();
     const [fileUrlName, setFileUrlName] = useState('');
-    const [fileOriginalUrlName, setFileOriginalUrlName] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [newImageUploaded, setNewImageUploaded] = useState(false);
 
     useQuery({
         queryKey: ['edit_post'],
         queryFn: () => getPost(urlPostId as string),
+        cacheTime: Infinity,
+        staleTime: Infinity,
         onSuccess: (data) => {
             const { image, content, title } = data;
             setPostTitle(title);
             setContent(content);
             if (image !== null && image !== 'null') {
-                setFileOriginalUrlName(`/api/images/${image}`);
+                setFileName(image);
                 setFileUrlName(`/api/images/${image}`);
             }
         },
@@ -54,9 +55,9 @@ function EditPost() {
         formData.append('title', postTitle);
         formData.append('content', content);
 
-        if (fileOriginalUrlName !== fileUrlName && fileOriginalUrlName !== '') {
+        if (fileName && `/api/images/${fileName}` !== fileUrlName) {
             try {
-                await axios.delete(fileOriginalUrlName);
+                await deleteImageDb(fileName);
             } catch {
                 alert('file is not deleted');
             }
@@ -110,7 +111,7 @@ function EditPost() {
                             onChange={ onFileInputChange }
                         />
                         <label className={ styles.postFileLabel } htmlFor="file">
-                            {fileName}
+                            {fileName ?? 'Upload New Image...'}
                         </label>
                     </div>
                     {

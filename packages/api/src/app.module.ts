@@ -9,12 +9,16 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbConfig),
     MulterModule.register({
       dest: './uploads',
+    }),
+    ConfigModule.forRoot({
+      envFilePath: ['.env.local'],
     }),
     ImagesModule,
     PhotosModule,
