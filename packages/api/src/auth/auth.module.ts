@@ -8,9 +8,13 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.env.local'],
+    }),
     UsersModule,
     PassportModule,
     JwtModule.register({
