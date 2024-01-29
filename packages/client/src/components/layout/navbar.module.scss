@@ -40,6 +40,7 @@
   height: 2rem;
   font-weight: 600;
   transition: all ease-in-out 0.3s;
+  min-width: max-content;
 
   &:hover {
     background: transparent;
