@@ -1,15 +1,19 @@
+"use client";
+
 import React, { useState } from 'react';
 
 import { AccountSettingsField } from './account-settings-field';
 import styles from './account-settings.module.scss';
 import { updateUserPhoto } from '../api/users';
-import { setUserData } from '../slices/authSlice';
-import { useAppDispatch, useAppSelector } from '../store';
 
 function AccountSettings() {
-    const dispatch = useAppDispatch();
-
-    const userData = useAppSelector((state) => state.auth.userData);
+    const userData = {
+        userId: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "jdoe@email.com",
+        photo: ""
+    };
 
     const { userId } = userData;
 
@@ -26,7 +30,7 @@ function AccountSettings() {
             try {
                 const { photo: newFileName } = await updateUserPhoto(userId, formData);
                 setPhoto(newFileName);
-                dispatch(setUserData({ ...userData, photo: newFileName }));
+                // dispatch(setUserData({ ...userData, photo: newFileName }));
                 setFileUrlName(`/api/photos/${newFileName}`);
                 setMessage('');
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any

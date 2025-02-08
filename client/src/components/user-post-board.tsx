@@ -1,6 +1,6 @@
-import React from 'react';
+"use client";
 
-import { useQuery } from '@tanstack/react-query';
+import React from 'react';
 
 import PostCard from './post-card';
 import ProfileCard from './profile-card';
@@ -11,17 +11,17 @@ import { Post } from '../models';
 import { useAppSelector } from '../store';
 
 function UserPostBoard() {
-    const [posts, setPosts] = React.useState<Post[]>([]);
+    const [posts, setPosts] = React.useState<Post[]>([
+        {
+            content: "<p>Hello</p>",
+            image: "",
+            postId: "1",
+            title: "Test"
+        }
+    ]);
 
-    const { userId } = useAppSelector((state) => state.auth.userData);
+    const { userId } = {userId: "1"};
 
-    useQuery({
-        queryKey: ['user_posts'],
-        queryFn: () => getUserPosts(userId!),
-        onSuccess: (data) => {
-            setPosts(data);
-        },
-    });
 
     const getPosts = React.useCallback(() => getUserPosts(userId!), [userId]);
 

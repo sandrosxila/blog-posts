@@ -2,23 +2,20 @@ import React, { useState } from 'react';
 
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import styles from './log-in.module.scss';
 import { userLogIn } from '../../api/users';
-import { setUserData } from '../../slices/authSlice';
-import { useAppDispatch } from '../../store';
 import FloatingLabelTextInput from '../ui/floating-label-text-input';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   onLogInLabelClick?: React.MouseEventHandler<HTMLLabelElement>;
 };
 
 function LogIn({ onLogInLabelClick }: Props) {
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const {
         register,
@@ -48,13 +45,13 @@ function LogIn({ onLogInLabelClick }: Props) {
             localStorage.setItem('token', data['access_token']);
             localStorage.setItem('refresh_token', data['refresh_token']);
 
-            dispatch(
-                setUserData({
-                    userId: sub,
-                    ...userData,
-                })
-            );
-            navigate('/');
+            // dispatch(
+            //     setUserData({
+            //         userId: sub,
+            //         ...userData,
+            //     })
+            // );
+            router.push('/');
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (e: any) {
             setError(e.response.data.message);

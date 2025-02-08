@@ -1,24 +1,20 @@
+"use client"
+
 import React from 'react';
 
-import { useQuery } from '@tanstack/react-query';
-import ReactHtmlParser from 'react-html-parser';
-import { useParams } from 'react-router-dom';
+import parse from 'html-react-parser';
 
 import styles from './post.module.scss';
-import { getPost } from '../api/posts';
+import { useParams } from 'next/navigation';
 
 function Post() {
-    const { postId: urlPostId } = useParams();
+    const { postId: urlPostId } = useParams<{postId: string}>();
 
-    const {
-        data: postData = {
-            title: '',
-            image: null,
-            content: '',
-        },
-    } = useQuery({
-        queryFn: () => getPost(urlPostId!),
-    });
+    const postData = {
+        title: 'Test Title',
+        image: null,
+        content: '<p>hello</p>',
+    }
 
     const { title, image, content } = postData;
 
@@ -35,7 +31,7 @@ function Post() {
                     )
                 }
                 <h1>{title}</h1>
-                <div>{ReactHtmlParser(content)}</div>
+                <div>{parse(content)}</div>
             </div>
         </div>
     );

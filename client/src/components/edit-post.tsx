@@ -1,8 +1,9 @@
+"use client";
+
 import React, { useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
 import JoditEditor from 'jodit-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useRouter, useParams } from 'next/navigation';
 
 import styles from './edit-post.module.scss';
 import { deleteImageDb } from '../api/images';
@@ -18,7 +19,7 @@ function EditPost() {
 
     const { postId: urlPostId } = useParams();
 
-    const navigate = useNavigate();
+    const router = useRouter();
     const [postTitle, setPostTitle] = useState('');
 
     const [file, setFile] = useState<File | null>(null);
@@ -26,25 +27,6 @@ function EditPost() {
     const [fileUrlName, setFileUrlName] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [newImageUploaded, setNewImageUploaded] = useState(false);
-
-    useQuery({
-        queryKey: ['edit_post'],
-        queryFn: () => getPost(urlPostId as string),
-        cacheTime: Infinity,
-        staleTime: Infinity,
-        onSuccess: (data) => {
-            const { image, content, title } = data;
-            setPostTitle(title);
-            setContent(content);
-            if (image !== null && image !== 'null') {
-                setFileName(image);
-                setFileUrlName(`/api/images/${image}`);
-            }
-        },
-        onError: () => {
-            navigate('/');
-        },
-    });
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -66,7 +48,7 @@ function EditPost() {
         try {
             await updatePost(urlPostId as string, formData);
             setAlertMessage('');
-            navigate('/');
+            router.push('/');
         } catch {
             setAlertMessage('Unable To Edit Post');
         }

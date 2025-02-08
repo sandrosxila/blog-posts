@@ -4,10 +4,15 @@ import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import styles from './profile-card.module.scss';
-import { useAppSelector } from '../store';
 
 function ProfileCard() {
-    const userData = useAppSelector((state) => state.auth.userData);
+    const userData = {
+        userId: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "jdoe@email.com",
+        photo: ""
+    };
     const [imageFail, setImageFail] = useState(false);
 
     const { firstName, lastName, email, photo } = userData;

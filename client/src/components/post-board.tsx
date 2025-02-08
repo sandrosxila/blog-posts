@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+"use client";
 
-import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
 
 import styles from './post-board.module.scss';
 import PostCard from './post-card';
@@ -8,20 +8,11 @@ import ProfileCard from './profile-card';
 import UserActions from './user-actions';
 import { getAllPosts } from '../api/posts';
 import { Post } from '../models';
-import { useAppSelector } from '../store';
 
 function PostBoard() {
     const [posts, setPosts] = useState<Post[]>([]);
 
-    const { userId } = useAppSelector((state) => state.auth.userData);
-
-    useQuery({
-        queryKey: ['all_posts'],
-        queryFn: () => getAllPosts(),
-        onSuccess: (data) => {
-            setPosts(data);
-        },
-    });
+    const { userId } = { userId: "1" };
 
     return (
         <div className={ styles.postBoardLayout }>

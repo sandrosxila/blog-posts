@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import ReactHtmlParser from 'react-html-parser';
-import { Link } from 'react-router-dom';
+import parse from 'html-react-parser';
 
 import DeleteMessage from './delete-message';
 import styles from './post-card.module.scss';
@@ -12,6 +11,7 @@ import { deleteImage } from '../api/images';
 import { deletePost } from '../api/posts';
 import { Post } from '../models';
 import { useAppSelector } from '../store';
+import Link from 'next/link';
 
 type Props = {
     title: string;
@@ -32,7 +32,7 @@ function PostCard({
     getPosts,
     imageName,
 }: Props) {
-    const { userId } = useAppSelector((state) => state.auth.userData);
+    const { userId } = {userId: "1"};
 
     const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
@@ -82,7 +82,7 @@ function PostCard({
                                     icon={ faTimes }
                                     onClick={ switchShowDeleteMessage }
                                 />
-                                <Link className={ styles.editLink } to={ `/edit/${postId}` }>
+                                <Link className={ styles.editLink } href={ `/edit/${postId}` }>
                                     <FontAwesomeIcon
                                         className={ styles.faPencil }
                                         icon={ faPencilAlt }
@@ -92,10 +92,10 @@ function PostCard({
                         )
                     }
                 </div>
-                <div className={ styles.content }>{ReactHtmlParser(content)}</div>
+                <div className={ styles.content }>{parse(content)}</div>
             </div>
             <div className={ styles.buttonGroup }>
-                <Link className={ styles.button } to={ `/${userId}/posts/${postId}` }>
+                <Link className={ styles.button } href={ `/${userId}/posts/${postId}` }>
                     Read More...
                 </Link>
             </div>

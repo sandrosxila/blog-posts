@@ -1,14 +1,15 @@
+"use client";
+
 import React, { useState, useRef } from 'react';
 
 import JoditEditor from 'jodit-react';
-import { useNavigate } from 'react-router-dom';
 
 import styles from './add-post.module.scss';
 import { addPost } from '../api/posts';
-import { useAppSelector } from '../store';
+import { useRouter } from 'next/navigation';
 
 function AddPost() {
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const titleRef = useRef<HTMLInputElement | null>(null);
 
@@ -24,7 +25,13 @@ function AddPost() {
 
     const [alertMessage, setAlertMessage] = useState('');
 
-    const userData = useAppSelector((state) => state.auth.userData);
+    const userData = {
+        userId: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "jdoe@email.com",
+        photo: ""
+    };
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -41,7 +48,7 @@ function AddPost() {
             try{
                 await addPost(formData);
                 setAlertMessage('');
-                navigate('/');
+                router.push('/');
             }
             catch {
                 setAlertMessage('Unable To Add Post');

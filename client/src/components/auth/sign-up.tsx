@@ -4,13 +4,11 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from 'react-hook-form';
 import PasswordStrengthBar from 'react-password-strength-bar';
-import { useNavigate } from 'react-router-dom';
 
 import styles from './sign-up.module.scss';
 import { userSignUp } from '../../api/users';
-import { setUserData } from '../../slices/authSlice';
-import { useAppDispatch } from '../../store';
 import FloatingLabelTextInput from '../ui/floating-label-text-input';
+import { useRouter } from 'next/navigation';
 
 type Props = {
     onSignUpLabelClick?: React.MouseEventHandler<HTMLLabelElement>;
@@ -26,8 +24,7 @@ type SignUpForm = {
 };
 
 function SignUp({ onSignUpLabelClick }: Props) {
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const {
         resetField,
@@ -94,10 +91,10 @@ function SignUp({ onSignUpLabelClick }: Props) {
         if (acceptPassword) {
             try {
                 const { userData, ...jwtPayload } = await userSignUp(formData);
-                dispatch(setUserData(userData));
+                // dispatch(setUserData(userData));
                 localStorage.setItem('access_token', jwtPayload.access_token);
                 localStorage.setItem('refresh_token', jwtPayload.refresh_token);
-                navigate('/');
+                router.push('/');
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (e: any) {
                 setError(e.response.data.message);

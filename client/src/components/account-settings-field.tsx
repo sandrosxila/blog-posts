@@ -6,8 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import styles from './account-settings-field.module.scss';
 import { updateUser } from '../api/users';
-import { UserData, setUserData } from '../slices/authSlice';
-import { useAppSelector, useAppDispatch } from '../store';
+import { UserData } from '../slices/authSlice';
 
 type AccountSettingsFieldProps = {
     labelText: string;
@@ -22,9 +21,15 @@ export const AccountSettingsField = ({
     setMessage,
     immutable = false,
 }: AccountSettingsFieldProps) => {
-    const dispatch = useAppDispatch();
 
-    const userData = useAppSelector((state) => state.auth.userData);
+    const userData = {
+        userId: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "jdoe@email.com",
+        photo: ""
+    };
+
     const { userId } = userData;
 
     const [editField, setEditField] = useState(false);
@@ -37,7 +42,7 @@ export const AccountSettingsField = ({
         if (userData[fieldName] !== fieldValue && userId && fieldValue) {
             try {
                 await updateUser(userId, { [fieldName]: fieldValue });
-                dispatch(setUserData({ ...userData, [fieldName]: fieldValue }));
+                // dispatch(setUserData({ ...userData, [fieldName]: fieldValue }));
                 setMessage('');
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (e: any) {
