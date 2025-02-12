@@ -9,6 +9,7 @@ import styles from './log-in.module.scss';
 import { userLogIn } from '../../api/users';
 import FloatingLabelTextInput from '../ui/floating-label-text-input';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 type Props = {
   onLogInLabelClick?: React.MouseEventHandler<HTMLLabelElement>;
@@ -109,7 +110,7 @@ function LogIn({ onLogInLabelClick }: Props) {
                     {'Sign Up if you don\'t have an account '}
                     <FontAwesomeIcon icon={ faArrowRight } size="sm" />
                 </label>              
-                <button className={ styles.logInButton } type="submit">
+                <button onClick={() => signIn("keycloak")} className={ styles.logInButton } type="button">
                     Log In
                 </button>
             </form>

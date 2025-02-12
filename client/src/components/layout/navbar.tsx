@@ -4,13 +4,14 @@ import React from 'react';
 import styles from './navbar.module.scss';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 export default function Navbar() {
     const pathname = usePathname();
     const isLoggedIn = true;
 
     const onLogOutClick = () => {
-        console.log("log out");
+        signOut();
     };
 
     return (
